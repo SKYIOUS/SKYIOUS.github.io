@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKYIOUS - Login</title>
+    <title>SKYIOUS - Admin Login</title>
     <link rel="stylesheet" href="../styles.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,50 +115,6 @@
             color: var(--primary-color);
         }
         
-        .login-divider {
-            display: flex;
-            align-items: center;
-            margin: 25px 0;
-            color: var(--gray-500);
-            font-size: 0.9rem;
-        }
-        
-        .login-divider::before,
-        .login-divider::after {
-            content: "";
-            flex: 1;
-            border-top: 1px solid var(--gray-300);
-        }
-        
-        .login-divider span {
-            padding: 0 15px;
-        }
-        
-        .social-login {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .social-login button {
-            flex: 1;
-            padding: 12px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--gray-300);
-            background-color: var(--text-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .social-login button:hover {
-            background-color: var(--gray-100);
-        }
-        
         .login-footer {
             margin-top: 25px;
             color: var(--gray-600);
@@ -199,11 +155,6 @@
             .login-card {
                 padding: 30px 20px;
             }
-            
-            .social-login {
-                flex-direction: column;
-                gap: 10px;
-            }
         }
     </style>
 </head>
@@ -223,8 +174,9 @@
                 </ul>
                 <div class="nav-actions">
                     <div class="account-link">
-                        <a href="login.html" id="loginLink">Login</a>
-                        <a href="dashboard.html" id="dashboardLink" style="display: none;">My Account</a>
+                        <a href="../account/login.html" id="userLoginLink">User Login</a>
+                        <a href="login.html" id="adminLoginLink">Admin Login</a>
+                        <a href="dashboard.html" id="dashboardLink" style="display: none;">Admin Dashboard</a>
                     </div>
                     <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
                         <i class="fas fa-moon"></i>
@@ -242,13 +194,14 @@
         <div class="container">
             <div class="login-card">
                 <div class="login-logo">SKYIOUS</div>
-                <p class="login-subtitle">Welcome back! Please login to your account.</p>
+                <p class="login-subtitle">Admin Login</p>
+                <p class="login-subtitle" style="font-size: 0.9rem; color: var(--gray-500);">Enter your credentials to access the admin area</p>
                 
                 <div id="loginAlert" class="login-alert"></div>
                 
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
-                        <label for="username">Username or Email</label>
+                        <label for="username">Username</label>
                         <input type="text" id="username" name="username" autocomplete="username" required>
                     </div>
                     
@@ -272,23 +225,9 @@
                     
                     <button type="submit" class="btn primary-btn">Login</button>
                     
-                    <div class="login-divider">
-                        <span>or</span>
-                    </div>
-                    
-                    <div class="social-login">
-                        <button type="button" class="btn secondary-btn">
-                            <i class="fab fa-google"></i>
-                            Continue with Google
-                        </button>
-                        <button type="button" class="btn secondary-btn">
-                            <i class="fab fa-github"></i>
-                            Continue with GitHub
-                        </button>
-                    </div>
-                    
                     <div class="login-footer">
-                        Don't have an account? <a href="register.html">Register here</a>
+                        <p>Please contact the administrator if you need access.</p>
+                        <p>Regular users, please <a href="../account/login.html">login here</a></p>
                     </div>
                 </form>
             </div>
@@ -313,31 +252,9 @@
                         <a href="../resources/">Resources</a>
                         <a href="../index.html#contact">Contact</a>
                     </div>
-                    <div class="footer-links-group">
-                        <h3>Resources</h3>
-                        <a href="../blog/">Blog</a>
-                        <a href="../resources/tutorials.html">Tutorials</a>
-                        <a href="../resources/documentation.html">Documentation</a>
-                    </div>
-                </div>
-                <div class="footer-newsletter">
-                    <h3>Stay Updated</h3>
-                    <p>Subscribe to our newsletter for the latest updates</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Your email address">
-                        <button type="submit" class="btn primary-btn">Subscribe</button>
-                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
-                <div class="social-links">
-                    <a href="https://github.com/SKYIOUS" target="_blank">
-                        <img src="../assets/github-avatar.jpg" alt="GitHub" class="social-avatar">
-                    </a>
-                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                </div>
                 <div class="copyright">
                     &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
                 </div>
@@ -350,46 +267,40 @@
     <script src="../scripts.js"></script>
     <script>
         $(document).ready(function() {
-            // Check if user is already logged in
-            if (Security.isLoggedIn()) {
-                window.location.href = 'dashboard.html';
-            }
+            // Set current year in copyright
+            const currentYear = new Date().getFullYear();
+            $('#currentYear').text(currentYear);
             
-            // Password toggle
+            // Toggle password visibility
             $('#passwordToggle').on('click', function() {
-                const passwordField = $('#password');
+                const passwordInput = $('#password');
                 const icon = $(this).find('i');
                 
-                if (passwordField.attr('type') === 'password') {
-                    passwordField.attr('type', 'text');
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
                     icon.removeClass('fa-eye').addClass('fa-eye-slash');
                 } else {
-                    passwordField.attr('type', 'password');
+                    passwordInput.attr('type', 'password');
                     icon.removeClass('fa-eye-slash').addClass('fa-eye');
                 }
             });
-            
-            // Show login alert
-            function showAlert(type, message) {
-                const alertElement = $('#loginAlert');
-                alertElement.removeClass('error success info')
-                    .addClass(type)
-                    .text(message)
-                    .css('display', 'block');
-            }
             
             // Check for URL messages
             const urlParams = new URLSearchParams(window.location.search);
             const message = urlParams.get('message');
             
-            if (message === 'logout') {
-                showAlert('info', 'You have been logged out successfully');
-            } else if (message === 'register') {
-                showAlert('success', 'Registration successful! Please wait for admin approval before logging in.');
-            } else if (message === 'reset') {
-                showAlert('success', 'Password has been reset. Please log in with your new password.');
+            if (message) {
+                switch(message) {
+                    case 'logout':
+                        showAlert('success', 'You have been successfully logged out.');
+                        break;
+                    case 'expired':
+                        showAlert('error', 'Your session has expired. Please login again.');
+                        break;
+                }
             }
             
+            // Form submission
             $('#loginForm').on('submit', function(e) {
                 e.preventDefault();
                 
@@ -400,21 +311,25 @@
                 const result = Security.login(username, password, rememberMe);
                 
                 if (result.success) {
-                    if (result.user.status === 'pending') {
-                        showAlert('warning', 'Your account is pending admin approval. Please try again later.');
+                    if (result.user.role !== 'admin') {
+                        showAlert('error', 'Access denied. This area is for administrators only.');
                         return;
                     }
-                    
-                    if (result.user.role === 'admin') {
-                        window.location.href = '../admin/dashboard.html';
-                    } else {
-                        window.location.href = 'dashboard.html';
-                    }
+                    window.location.href = 'dashboard.html';
                 } else {
                     showAlert('error', result.message);
                 }
             });
         });
+        
+        function showAlert(type, message) {
+            const alert = $('#loginAlert');
+            alert.removeClass().addClass(`login-alert ${type}`).text(message).show();
+            
+            setTimeout(() => {
+                alert.fadeOut();
+            }, 5000);
+        }
     </script>
 </body>
 </html> 
