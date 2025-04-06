@@ -694,6 +694,32 @@ nav.scrolled .theme-toggle:hover {
     margin-bottom: 0;
 }
 
+.data-visualization {
+    margin-top: 60px;
+    background-color: var(--text-light);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+}
+
+.data-visualization h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--gray-800);
+}
+
+.chart-container {
+    height: 400px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 350px;
+    }
+}
+
 /* Login Form Styles */
 .login-container {
     max-width: 500px;
@@ -1326,6 +1352,10 @@ footer {
     .back-to-top a {
         width: 40px;
         height: 40px;
+    }
+    
+    .chart-container {
+        height: 350px;
     }
 }
 

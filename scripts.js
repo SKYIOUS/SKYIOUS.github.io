@@ -161,31 +161,20 @@ $(document).ready(function() {
         const username = $('#username').val().trim();
         const password = $('#password').val().trim();
         
-        // Default credentials (in real-world scenario, these should not be hardcoded)
-        const correctUsername = 'admin';
-        const correctPasswordHash = 'e5c3abb7a26';
-        
-        if (username === correctUsername) {
-            // Hash the entered password
-            const hashedPassword = customHash(password);
-            console.log('Debug hash:', hashedPassword.substring(0, 10)); // Only for testing
+        // Direct credentials check for simplicity
+        if (username === 'admin' && password === 'skyious2023') {
+            // Set logged in state
+            localStorage.setItem('isLoggedIn', 'true');
             
-            // Check if the first 10 characters match
-            // (we only compare part of the hash since our hash includes a timestamp component)
-            if (hashedPassword.substring(0, 10).includes(correctPasswordHash.substring(0, 8))) {
-                // Set logged in state
-                localStorage.setItem('isLoggedIn', 'true');
-                
-                // Show success message
-                showLoginStatus('success', 'Login successful! Redirecting...');
-                
-                // Redirect to admin page
-                setTimeout(function() {
-                    window.location.href = 'admin.html';
-                }, 1000);
-            } else {
-                showLoginStatus('error', 'Incorrect password');
-            }
+            // Show success message
+            showLoginStatus('success', 'Login successful! Redirecting...');
+            
+            // Redirect to admin page
+            setTimeout(function() {
+                window.location.href = 'admin.html';
+            }, 1000);
+        } else if (username === 'admin') {
+            showLoginStatus('error', 'Incorrect password');
         } else {
             showLoginStatus('error', 'Username not found');
         }
@@ -311,7 +300,7 @@ $(document).ready(function() {
                         <div class="project-tags">
                             ${tagsHtml}
                         </div>
-                        <a href="${project.link}" class="project-link" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                        <a href="project-detail.html?id=${project.id}" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             `;
@@ -328,6 +317,55 @@ $(document).ready(function() {
     if ($('#projectsGrid').length) {
         loadProjects();
     }
+    
+    // Project search functionality
+    $('#projectSearch').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase().trim();
+        
+        if ($('#projectsGrid').length) {
+            if (searchTerm === '') {
+                // If search is cleared, reset to the current filter
+                const currentFilter = $('.filter-btn.active').data('filter');
+                if (currentFilter === 'all') {
+                    $('.project-card').show();
+                } else {
+                    $('.project-card').hide();
+                    $(`.project-card[data-category="${currentFilter}"]`).show();
+                }
+            } else {
+                // First hide all projects
+                $('.project-card').hide();
+                
+                // Show projects that match the search term in title, description or tags
+                $('.project-card').each(function() {
+                    const title = $(this).find('h3').text().toLowerCase();
+                    const description = $(this).find('p').text().toLowerCase();
+                    const tags = $(this).find('.project-tags').text().toLowerCase();
+                    
+                    if (title.includes(searchTerm) || 
+                        description.includes(searchTerm) || 
+                        tags.includes(searchTerm)) {
+                        $(this).show();
+                    }
+                });
+            }
+            
+            // Check if we need to show the empty message
+            if ($('.project-card:visible').length === 0) {
+                $('.empty-projects-message').show();
+            } else {
+                $('.empty-projects-message').hide();
+            }
+        }
+    });
+    
+    // Search button click
+    $('.search-btn').on('click', function() {
+        const searchTerm = $('#projectSearch').val().toLowerCase().trim();
+        if (searchTerm) {
+            $('#projectSearch').trigger('input');
+        }
+    });
     
     // Newsletter subscribe form
     $('.newsletter-form').on('submit', function(e) {
@@ -350,4 +388,79 @@ $(document).ready(function() {
         alert('Thanks for subscribing to our newsletter!');
         this.reset();
     });
+    
+    // Initialize technology expertise chart
+    if ($('#technologiesChart').length) {
+        const ctx = document.getElementById('technologiesChart').getContext('2d');
+        
+        const technologyChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Web Development', 'Mobile Apps', 'Data Science', 'Cloud Services', 'AI/ML', 'DevOps'],
+                datasets: [{
+                    data: [35, 25, 15, 10, 10, 5],
+                    backgroundColor: [
+                        '#4361ee',
+                        '#3a0ca3',
+                        '#7209b7',
+                        '#f72585',
+                        '#4cc9f0',
+                        '#4895ef'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 14
+                            },
+                            padding: 20,
+                            color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#ffffff' : '#333333'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleFont: {
+                            family: 'Inter',
+                            size: 14
+                        },
+                        bodyFont: {
+                            family: 'Inter',
+                            size: 13
+                        },
+                        padding: 15,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+        
+        // Update chart when theme changes
+        $('#themeToggle').on('click', function() {
+            setTimeout(function() {
+                technologyChart.options.plugins.legend.labels.color = 
+                    document.documentElement.getAttribute('data-theme') === 'dark' ? '#ffffff' : '#333333';
+                technologyChart.update();
+            }, 100);
+        });
+    }
 }); 
