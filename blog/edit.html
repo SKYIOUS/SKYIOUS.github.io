@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - Edit Blog Post</title>
+    <link rel="stylesheet" href="../styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .edit-post-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .edit-post-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .edit-post-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .edit-post-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--text-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .form-actions button {
+            flex: 1;
+        }
+        
+        .preview-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .preview-section h3 {
+            margin-bottom: 15px;
+            color: var(--gray-700);
+        }
+        
+        .preview-content {
+            background-color: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .preview-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+        
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-900);
+        }
+        
+        .preview-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+        
+        .preview-content-text {
+            line-height: 1.6;
+            color: var(--gray-700);
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .edit-post-header h1 {
+                font-size: 2rem;
+            }
+            
+            .edit-post-form {
+                padding: 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../blog/">Blog</a></li>
+                    <li><a href="../resources/">Resources</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="account-link">
+                        <a href="../account/login.html" id="loginLink">Login</a>
+                        <a href="../account/dashboard.html" id="dashboardLink" style="display: none;">My Account</a>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="edit-post-container">
+        <div class="container">
+            <div class="edit-post-header">
+                <h1>Edit Blog Post</h1>
+                <p>Update your blog post content</p>
+            </div>
+            
+            <form id="editPostForm" class="edit-post-form">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" required>
+                    <div class="error-message" id="titleError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="technology">Technology</option>
+                        <option value="design">Design</option>
+                        <option value="development">Development</option>
+                        <option value="tutorial">Tutorial</option>
+                        <option value="insights">Insights</option>
+                    </select>
+                    <div class="error-message" id="categoryError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image">Featured Image URL</label>
+                    <input type="url" id="image" required>
+                    <div class="error-message" id="imageError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea id="content" required></textarea>
+                    <div class="error-message" id="contentError"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn secondary-btn" onclick="window.location.href='my-posts.html'">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn primary-btn">
+                        Update Post
+                    </button>
+                </div>
+            </form>
+            
+            <div class="preview-section">
+                <h3>Preview</h3>
+                <div class="preview-content">
+                    <img id="previewImage" src="" alt="Preview" class="preview-image" style="display: none;">
+                    <h2 id="previewTitle" class="preview-title"></h2>
+                    <div class="preview-meta">
+                        <span id="previewCategory"></span>
+                        <span id="previewDate"></span>
+                    </div>
+                    <div id="previewContent" class="preview-content-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="../index.html">Home</a>
+                        <a href="../index.html#about">About</a>
+                        <a href="../index.html#projects">Projects</a>
+                        <a href="../index.html#features">Features</a>
+                        <a href="../blog/">Blog</a>
+                        <a href="../resources/">Resources</a>
+                        <a href="../index.html#contact">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../security.js"></script>
+    <script src="../scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Check if user is logged in
+            if (!Security.isLoggedIn()) {
+                window.location.href = '../account/login.html';
+                return;
+            }
+            
+            // Check if user is approved
+            const currentUser = Security.getCurrentUser();
+            if (currentUser.status === 'pending') {
+                window.location.href = '../account/dashboard.html';
+                return;
+            }
+            
+            // Set current year in copyright
+            const currentYear = new Date().getFullYear();
+            $('#currentYear').text(currentYear);
+            
+            // Get post ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            
+            if (!postId) {
+                window.location.href = 'my-posts.html';
+                return;
+            }
+            
+            // Load post data
+            const blogs = Security.getAllBlogs();
+            const post = blogs.find(b => b.id === postId);
+            
+            if (!post) {
+                window.location.href = 'my-posts.html';
+                return;
+            }
+            
+            // Check if user owns this post
+            if (post.author !== currentUser.username) {
+                window.location.href = 'my-posts.html';
+                return;
+            }
+            
+            // Populate form with post data
+            $('#title').val(post.title);
+            $('#category').val(post.category);
+            $('#image').val(post.image);
+            $('#content').val(post.content);
+            
+            // Update preview
+            updatePreview();
+            
+            // Live preview
+            $('#title, #category, #content, #image').on('input', updatePreview);
+            
+            // Form submission
+            $('#editPostForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // Update post data
+                const updatedPost = {
+                    ...post,
+                    title: $('#title').val(),
+                    category: $('#category').val(),
+                    content: $('#content').val(),
+                    image: $('#image').val(),
+                    updated: new Date().toISOString()
+                };
+                
+                // Update post in storage
+                const updatedBlogs = blogs.map(b => b.id === postId ? updatedPost : b);
+                localStorage.setItem('blogs', JSON.stringify(updatedBlogs));
+                
+                // Redirect to my posts
+                window.location.href = 'my-posts.html';
+            });
+        });
+        
+        function updatePreview() {
+            const title = $('#title').val();
+            const category = $('#category').val();
+            const content = $('#content').val();
+            const image = $('#image').val();
+            
+            $('#previewTitle').text(title || 'Your Post Title');
+            $('#previewCategory').text(category || 'Category');
+            $('#previewDate').text(new Date().toLocaleDateString());
+            $('#previewContent').text(content || 'Your post content will appear here...');
+            
+            if (image) {
+                $('#previewImage').attr('src', image).show();
+            } else {
+                $('#previewImage').hide();
+            }
+        }
+        
+        function validateForm() {
+            let isValid = true;
+            
+            // Clear previous errors
+            $('.error-message').text('');
+            
+            // Validate title
+            const title = $('#title').val().trim();
+            if (!title) {
+                $('#titleError').text('Title is required');
+                isValid = false;
+            }
+            
+            // Validate category
+            const category = $('#category').val();
+            if (!category) {
+                $('#categoryError').text('Category is required');
+                isValid = false;
+            }
+            
+            // Validate image URL
+            const image = $('#image').val().trim();
+            if (!image) {
+                $('#imageError').text('Image URL is required');
+                isValid = false;
+            } else if (!isValidUrl(image)) {
+                $('#imageError').text('Please enter a valid URL');
+                isValid = false;
+            }
+            
+            // Validate content
+            const content = $('#content').val().trim();
+            if (!content) {
+                $('#contentError').text('Content is required');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        function isValidUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html> 

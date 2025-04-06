@@ -238,6 +238,7 @@ const Security = (function() {
                 passwordHash: hashedPassword,
                 salt: salt,
                 role: userData.role || 'user',
+                status: userData.status || 'pending',
                 created: new Date().toISOString(),
                 lastLogin: null,
                 profile: {
@@ -316,6 +317,7 @@ const Security = (function() {
                 username: user.username,
                 email: user.email,
                 role: user.role,
+                status: user.status,
                 token: token,
                 expires: expires,
                 created: user.created,
@@ -521,6 +523,117 @@ const Security = (function() {
                     fullName: 'Admin User'
                 });
             }
+        },
+        
+        // Admin Functions
+        isAdmin: function() {
+            const currentUser = this.getCurrentUser();
+            return currentUser && currentUser.role === 'admin';
+        },
+        
+        getAllUsers: function() {
+            const users = JSON.parse(localStorage.getItem(USER_KEY) || '[]');
+            return users;
+        },
+        
+        createUser: function(userData) {
+            const users = this.getAllUsers();
+            const newUser = {
+                id: Date.now().toString(),
+                ...userData,
+                created: new Date().toISOString()
+            };
+            users.push(newUser);
+            localStorage.setItem(USER_KEY, JSON.stringify(users));
+            return newUser;
+        },
+        
+        approveUser: function(userId) {
+            const users = this.getAllUsers();
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex !== -1) {
+                users[userIndex].status = 'approved';
+                localStorage.setItem(USER_KEY, JSON.stringify(users));
+                return true;
+            }
+            return false;
+        },
+        
+        deleteUser: function(userId) {
+            const users = this.getAllUsers();
+            const filteredUsers = users.filter(u => u.id !== userId);
+            localStorage.setItem(USER_KEY, JSON.stringify(filteredUsers));
+            return true;
+        },
+        
+        getAllBlogs: function() {
+            const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
+            return blogs;
+        },
+        
+        createBlog: function(blogData) {
+            const blogs = this.getAllBlogs();
+            const newBlog = {
+                id: Date.now().toString(),
+                ...blogData,
+                created: new Date().toISOString()
+            };
+            blogs.push(newBlog);
+            localStorage.setItem('blogs', JSON.stringify(blogs));
+            return newBlog;
+        },
+        
+        deleteBlog: function(blogId) {
+            const blogs = this.getAllBlogs();
+            const filteredBlogs = blogs.filter(b => b.id !== blogId);
+            localStorage.setItem('blogs', JSON.stringify(filteredBlogs));
+            return true;
+        },
+        
+        getAllResources: function() {
+            const resources = JSON.parse(localStorage.getItem('resources') || '[]');
+            return resources;
+        },
+        
+        createResource: function(resourceData) {
+            const resources = this.getAllResources();
+            const newResource = {
+                id: Date.now().toString(),
+                ...resourceData,
+                created: new Date().toISOString()
+            };
+            resources.push(newResource);
+            localStorage.setItem('resources', JSON.stringify(resources));
+            return newResource;
+        },
+        
+        deleteResource: function(resourceId) {
+            const resources = this.getAllResources();
+            const filteredResources = resources.filter(r => r.id !== resourceId);
+            localStorage.setItem('resources', JSON.stringify(filteredResources));
+            return true;
+        },
+        
+        getStats: function() {
+            const users = this.getAllUsers();
+            const blogs = this.getAllBlogs();
+            const resources = this.getAllResources();
+            
+            return {
+                totalUsers: users.length,
+                pendingApprovals: users.filter(u => u.status === 'pending').length,
+                totalBlogs: blogs.length,
+                totalResources: resources.length
+            };
+        },
+        
+        updateSettings: function(settings) {
+            localStorage.setItem('siteSettings', JSON.stringify(settings));
+            return true;
+        },
+        
+        getSettings: function() {
+            return JSON.parse(localStorage.getItem('siteSettings') || '{}');
         }
     };
 })();

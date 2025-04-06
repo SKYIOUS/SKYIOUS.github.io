@@ -370,47 +370,42 @@
                     .css('display', 'block');
             }
             
-            // Handle form submission
-            $('#loginForm').on('submit', function(e) {
-                e.preventDefault();
-                
-                const username = $('#username').val().trim();
-                const password = $('#password').val();
-                const rememberMe = $('#rememberMe').is(':checked');
-                
-                if (!username || !password) {
-                    showAlert('error', 'Please enter your username/email and password');
-                    return;
-                }
-                
-                // Attempt login
-                const result = Security.login(username, password, rememberMe);
-                
-                if (result.success) {
-                    showAlert('success', 'Login successful! Redirecting...');
-                    
-                    // Redirect after a brief delay
-                    setTimeout(function() {
-                        window.location.href = 'dashboard.html';
-                    }, 1000);
-                } else {
-                    showAlert('error', result.message);
-                }
-            });
-            
-            // Check for redirect messages
+            // Check for URL messages
             const urlParams = new URLSearchParams(window.location.search);
             const message = urlParams.get('message');
             
             if (message === 'logout') {
                 showAlert('info', 'You have been logged out successfully');
             } else if (message === 'register') {
-                showAlert('success', 'Registration successful! You can now log in.');
+                showAlert('success', 'Registration successful! Please wait for admin approval before logging in.');
             } else if (message === 'reset') {
                 showAlert('success', 'Password has been reset. Please log in with your new password.');
-            } else if (message === 'expired') {
-                showAlert('info', 'Your session has expired. Please log in again.');
             }
+            
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const username = $('#username').val();
+                const password = $('#password').val();
+                const rememberMe = $('#rememberMe').is(':checked');
+                
+                const result = Security.login(username, password, rememberMe);
+                
+                if (result.success) {
+                    if (result.user.status === 'pending') {
+                        showAlert('warning', 'Your account is pending admin approval. Please try again later.');
+                        return;
+                    }
+                    
+                    if (result.user.role === 'admin') {
+                        window.location.href = '../admin/dashboard.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    showAlert('error', result.message);
+                }
+            });
         });
     </script>
 </body>

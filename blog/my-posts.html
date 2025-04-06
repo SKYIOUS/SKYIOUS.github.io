@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - My Blog Posts</title>
+    <link rel="stylesheet" href="../styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .my-posts-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .my-posts-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .my-posts-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .my-posts-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .my-posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .post-card {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .post-content {
+            padding: 20px;
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+        
+        .post-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-900);
+        }
+        
+        .post-excerpt {
+            color: var(--gray-700);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .post-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-draft {
+            background-color: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+        }
+        
+        .status-published {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+        
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+        
+        .no-posts {
+            text-align: center;
+            padding: 40px;
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .no-posts i {
+            font-size: 3rem;
+            color: var(--gray-400);
+            margin-bottom: 20px;
+        }
+        
+        .no-posts h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--gray-900);
+        }
+        
+        .no-posts p {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .my-posts-header h1 {
+                font-size: 2rem;
+            }
+            
+            .my-posts-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .my-posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../blog/">Blog</a></li>
+                    <li><a href="../resources/">Resources</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="account-link">
+                        <a href="../account/login.html" id="loginLink">Login</a>
+                        <a href="../account/dashboard.html" id="dashboardLink" style="display: none;">My Account</a>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="my-posts-container">
+        <div class="container">
+            <div class="my-posts-header">
+                <h1>My Blog Posts</h1>
+                <p>Manage and edit your blog posts</p>
+            </div>
+            
+            <div class="my-posts-actions">
+                <button class="btn primary-btn" onclick="createNewPost()">
+                    <i class="fas fa-plus"></i> Create New Post
+                </button>
+            </div>
+            
+            <div class="my-posts-grid" id="postsGrid">
+                <!-- Posts will be loaded here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="../index.html">Home</a>
+                        <a href="../index.html#about">About</a>
+                        <a href="../index.html#projects">Projects</a>
+                        <a href="../index.html#features">Features</a>
+                        <a href="../blog/">Blog</a>
+                        <a href="../resources/">Resources</a>
+                        <a href="../index.html#contact">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../security.js"></script>
+    <script src="../scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Check if user is logged in
+            if (!Security.isLoggedIn()) {
+                window.location.href = '../account/login.html';
+                return;
+            }
+            
+            // Check if user is approved
+            const currentUser = Security.getCurrentUser();
+            if (currentUser.status === 'pending') {
+                window.location.href = '../account/dashboard.html';
+                return;
+            }
+            
+            // Set current year in copyright
+            const currentYear = new Date().getFullYear();
+            $('#currentYear').text(currentYear);
+            
+            // Load user's blog posts
+            loadUserPosts();
+        });
+        
+        function loadUserPosts() {
+            const currentUser = Security.getCurrentUser();
+            const blogs = Security.getAllBlogs().filter(blog => blog.author === currentUser.username);
+            const $grid = $('#postsGrid').empty();
+            
+            if (blogs.length === 0) {
+                $grid.append(`
+                    <div class="no-posts">
+                        <i class="fas fa-blog"></i>
+                        <h3>No Blog Posts Yet</h3>
+                        <p>Start sharing your thoughts and experiences with the community!</p>
+                        <button class="btn primary-btn" onclick="createNewPost()">
+                            <i class="fas fa-plus"></i> Create Your First Post
+                        </button>
+                    </div>
+                `);
+                return;
+            }
+            
+            blogs.forEach(blog => {
+                const $card = $(`
+                    <div class="post-card">
+                        <img src="${blog.image}" alt="${blog.title}" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>${blog.category}</span>
+                                <span>${new Date(blog.created).toLocaleDateString()}</span>
+                            </div>
+                            <h3 class="post-title">${blog.title}</h3>
+                            <p class="post-excerpt">${blog.content.substring(0, 150)}...</p>
+                            <div class="post-status status-${blog.status}">
+                                ${blog.status}
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn secondary-btn" onclick="editPost('${blog.id}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn danger-btn" onclick="deletePost('${blog.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                $grid.append($card);
+            });
+        }
+        
+        function createNewPost() {
+            window.location.href = 'create.html';
+        }
+        
+        function editPost(postId) {
+            window.location.href = `edit.html?id=${postId}`;
+        }
+        
+        function deletePost(postId) {
+            if (confirm('Are you sure you want to delete this blog post?')) {
+                Security.deleteBlog(postId);
+                loadUserPosts();
+            }
+        }
+    </script>
+</body>
+</html> 

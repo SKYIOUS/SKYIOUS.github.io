@@ -702,15 +702,18 @@
                 }
                 
                 // Register user
-                const result = Security.register({
-                    username: username,
-                    email: email,
-                    password: password,
+                const userData = {
+                    username,
+                    email,
+                    password: Security.hashPassword(password),
+                    role: 'user',
+                    status: 'pending',
+                    created: new Date().toISOString(),
                     fullName: firstName + ' ' + lastName
-                });
+                };
                 
-                if (result.success) {
-                    showAlert('success', result.message);
+                if (Security.register(userData)) {
+                    showAlert('success', 'Your account has been created successfully! Please note that your account requires admin approval before you can access the platform. You will receive an email notification once your account is approved.');
                     
                     // Clear form
                     $('#registerForm')[0].reset();
@@ -737,10 +740,10 @@
                     
                     // Redirect to login after delay
                     setTimeout(function() {
-                        window.location.href = 'login.html?message=register';
+                        window.location.href = 'login.html';
                     }, 2000);
                 } else {
-                    showAlert('error', result.message);
+                    showAlert('error', 'Registration failed. Please try again.');
                 }
             });
             
