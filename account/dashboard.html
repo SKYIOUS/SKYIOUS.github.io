@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - User Dashboard</title>
+    <link rel="stylesheet" href="../styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .dashboard-header {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .dashboard-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .user-info h2 {
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            margin-bottom: 5px;
+            color: var(--gray-600);
+        }
+        
+        .user-role {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .dashboard-actions button {
+            padding: 10px 15px;
+        }
+        
+        .logout-btn {
+            background-color: var(--gray-600);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--gray-700);
+        }
+        
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        .dashboard-sidebar {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-nav li {
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .sidebar-nav li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .sidebar-nav a:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+            color: var(--primary-color);
+        }
+        
+        .sidebar-nav a.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .sidebar-nav i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-main {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            padding: 30px;
+        }
+        
+        .dashboard-title {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .dashboard-title h3 {
+            margin-bottom: 8px;
+        }
+        
+        .dashboard-title p {
+            color: var(--gray-600);
+            margin-bottom: 0;
+        }
+        
+        .profile-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .profile-form .form-group:last-child {
+            grid-column: span 2;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .security-form .form-group {
+            max-width: 500px;
+        }
+        
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .activity-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(79, 70, 229, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-content h4 {
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .activity-content p {
+            margin-bottom: 0;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+        
+        .activity-time {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .account-info-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .account-info-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .account-info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .account-info-label {
+            font-weight: 500;
+        }
+        
+        .account-info-value {
+            color: var(--gray-600);
+        }
+        
+        .password-field {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray-500);
+        }
+        
+        .form-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+        }
+        
+        .form-status.success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #065f46;
+        }
+        
+        .form-status.error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #b91c1c;
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-sidebar {
+                position: sticky;
+                top: 100px;
+                z-index: 10;
+            }
+            
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
+            .sidebar-nav li {
+                flex: 1;
+                min-width: 120px;
+                border-bottom: none;
+                border-right: 1px solid var(--gray-200);
+            }
+            
+            .sidebar-nav a {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+                padding: 15px 10px;
+            }
+            
+            .sidebar-nav a.active {
+                border-left: none;
+                border-bottom: 4px solid var(--primary-color);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-form .form-group:last-child {
+                grid-column: span 1;
+            }
+            
+            .dashboard-user {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../blog/">Blog</a></li>
+                    <li><a href="../resources/">Resources</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="dashboard-user">
+                    <div class="user-avatar" id="userAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h2 id="userName">Loading...</h2>
+                        <p id="userEmail">Loading...</p>
+                        <span class="user-role" id="userRole">Loading...</span>
+                    </div>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="btn primary-btn" id="editProfileBtn">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button class="btn logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="dashboard-sidebar">
+                    <ul class="sidebar-nav">
+                        <li><a href="#overview" class="tab-link active" data-tab="overview"><i class="fas fa-th-large"></i> Overview</a></li>
+                        <li><a href="#profile" class="tab-link" data-tab="profile"><i class="fas fa-user"></i> Profile</a></li>
+                        <li><a href="#security" class="tab-link" data-tab="security"><i class="fas fa-shield-alt"></i> Security</a></li>
+                        <li><a href="#activity" class="tab-link" data-tab="activity"><i class="fas fa-history"></i> Activity</a></li>
+                        <li><a href="#saved" class="tab-link" data-tab="saved"><i class="fas fa-bookmark"></i> Saved Items</a></li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-main">
+                    <!-- Overview Tab -->
+                    <div class="tab-content active" id="overview-tab">
+                        <div class="dashboard-title">
+                            <h3>Account Overview</h3>
+                            <p>View and manage your account information</p>
+                        </div>
+                        
+                        <div class="account-overview">
+                            <ul class="account-info-list">
+                                <li class="account-info-item">
+                                    <span class="account-info-label">Username</span>
+                                    <span class="account-info-value" id="overviewUsername">Loading...</span>
+                                </li>
+                                <li class="account-info-item">
+                                    <span class="account-info-label">Email</span>
+                                    <span class="account-info-value" id="overviewEmail">Loading...</span>
+                                </li>
+                                <li class="account-info-item">
+                                    <span class="account-info-label">Account Created</span>
+                                    <span class="account-info-value" id="overviewCreated">Loading...</span>
+                                </li>
+                                <li class="account-info-item">
+                                    <span class="account-info-label">Last Login</span>
+                                    <span class="account-info-value" id="overviewLastLogin">Loading...</span>
+                                </li>
+                                <li class="account-info-item">
+                                    <span class="account-info-label">Account Type</span>
+                                    <span class="account-info-value" id="overviewRole">Loading...</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Tab -->
+                    <div class="tab-content" id="profile-tab">
+                        <div class="dashboard-title">
+                            <h3>Profile Information</h3>
+                            <p>Update your personal information</p>
+                        </div>
+                        
+                        <form id="profileForm" class="profile-form">
+                            <div class="form-group">
+                                <label for="profileFirstName">First Name</label>
+                                <input type="text" id="profileFirstName" name="firstName">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileLastName">Last Name</label>
+                                <input type="text" id="profileLastName" name="lastName">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileUsername">Username</label>
+                                <input type="text" id="profileUsername" name="username" disabled>
+                                <small>Username cannot be changed</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail" name="email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileBio">Bio</label>
+                                <textarea id="profileBio" name="bio" rows="4"></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn secondary-btn" id="cancelProfileBtn">Cancel</button>
+                                <button type="submit" class="btn primary-btn">Save Changes</button>
+                            </div>
+                            
+                            <div id="profileStatus" class="form-status"></div>
+                        </form>
+                    </div>
+                    
+                    <!-- Security Tab -->
+                    <div class="tab-content" id="security-tab">
+                        <div class="dashboard-title">
+                            <h3>Security Settings</h3>
+                            <p>Manage your password and security preferences</p>
+                        </div>
+                        
+                        <form id="securityForm" class="security-form">
+                            <div class="form-group password-field">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" id="currentPassword" name="currentPassword" required>
+                                <button type="button" class="password-toggle" data-target="currentPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="form-group password-field">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword" required>
+                                <button type="button" class="password-toggle" data-target="newPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="form-group password-field">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                <button type="button" class="password-toggle" data-target="confirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn primary-btn">Change Password</button>
+                            </div>
+                            
+                            <div id="securityStatus" class="form-status"></div>
+                        </form>
+                    </div>
+                    
+                    <!-- Activity Tab -->
+                    <div class="tab-content" id="activity-tab">
+                        <div class="dashboard-title">
+                            <h3>Account Activity</h3>
+                            <p>View your recent account activity</p>
+                        </div>
+                        
+                        <ul class="activity-list" id="activityList">
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Account Login</h4>
+                                    <p>You logged in to your account</p>
+                                </div>
+                                <span class="activity-time">Just now</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Saved Items Tab -->
+                    <div class="tab-content" id="saved-tab">
+                        <div class="dashboard-title">
+                            <h3>Saved Items</h3>
+                            <p>View your saved projects and resources</p>
+                        </div>
+                        
+                        <div id="savedItems">
+                            <p>You don't have any saved items yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="../index.html">Home</a>
+                        <a href="../index.html#about">About</a>
+                        <a href="../index.html#projects">Projects</a>
+                        <a href="../index.html#features">Features</a>
+                        <a href="../blog/">Blog</a>
+                        <a href="../resources/">Resources</a>
+                        <a href="../index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-group">
+                        <h3>Resources</h3>
+                        <a href="../blog/">Blog</a>
+                        <a href="../resources/tutorials.html">Tutorials</a>
+                        <a href="../resources/documentation.html">Documentation</a>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter for the latest updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn primary-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="https://github.com/SKYIOUS" target="_blank">
+                        <img src="../assets/github-avatar.jpg" alt="GitHub" class="social-avatar">
+                    </a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../security.js"></script>
+    <script src="../scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Check if user is logged in, redirect if not
+            const currentUser = Security.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load user information
+            loadUserInfo(currentUser);
+            
+            // Tab navigation
+            $('.tab-link').on('click', function(e) {
+                e.preventDefault();
+                
+                const tabId = $(this).data('tab');
+                
+                // Update active tab links
+                $('.tab-link').removeClass('active');
+                $(this).addClass('active');
+                
+                // Show active tab content
+                $('.tab-content').removeClass('active');
+                $(`#${tabId}-tab`).addClass('active');
+            });
+            
+            // Edit profile button
+            $('#editProfileBtn').on('click', function() {
+                $('.tab-link[data-tab="profile"]').click();
+            });
+            
+            // Password toggle functionality
+            $('.password-toggle').on('click', function() {
+                const targetId = $(this).data('target');
+                const passwordField = $(`#${targetId}`);
+                const icon = $(this).find('i');
+                
+                if (passwordField.attr('type') === 'password') {
+                    passwordField.attr('type', 'text');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    passwordField.attr('type', 'password');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+            
+            // Logout button
+            $('#logoutBtn').on('click', function() {
+                Security.logout();
+                window.location.href = 'login.html';
+            });
+            
+            // Profile form submission
+            $('#profileForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const firstName = $('#profileFirstName').val().trim();
+                const lastName = $('#profileLastName').val().trim();
+                const email = $('#profileEmail').val().trim();
+                const bio = $('#profileBio').val().trim();
+                
+                // Update user in localStorage
+                const users = JSON.parse(localStorage.getItem('skyious_users') || '[]');
+                const userIndex = users.findIndex(u => u.username === currentUser.username);
+                
+                if (userIndex === -1) {
+                    showStatus('profileStatus', 'error', 'User not found');
+                    return;
+                }
+                
+                // Update user data
+                users[userIndex].email = email;
+                users[userIndex].profile = users[userIndex].profile || {};
+                users[userIndex].profile.fullName = `${firstName} ${lastName}`;
+                users[userIndex].profile.bio = bio;
+                
+                // Save to localStorage
+                localStorage.setItem('skyious_users', JSON.stringify(users));
+                
+                // Update displayed user info
+                loadUserInfo(Security.getCurrentUser());
+                
+                // Show success message
+                showStatus('profileStatus', 'success', 'Profile updated successfully');
+            });
+            
+            // Security form submission
+            $('#securityForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = $('#currentPassword').val();
+                const newPassword = $('#newPassword').val();
+                const confirmPassword = $('#confirmPassword').val();
+                
+                // Validate passwords
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    showStatus('securityStatus', 'error', 'Please fill in all fields');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    showStatus('securityStatus', 'error', 'New passwords do not match');
+                    return;
+                }
+                
+                if (newPassword.length < 8) {
+                    showStatus('securityStatus', 'error', 'New password must be at least 8 characters long');
+                    return;
+                }
+                
+                // Change password
+                const result = Security.changePassword(currentUser.username, currentPassword, newPassword);
+                
+                if (result.success) {
+                    showStatus('securityStatus', 'success', result.message);
+                    $('#securityForm')[0].reset();
+                } else {
+                    showStatus('securityStatus', 'error', result.message);
+                }
+            });
+            
+            // Cancel profile button
+            $('#cancelProfileBtn').on('click', function() {
+                // Reset form with current user data
+                populateProfileForm(currentUser);
+                
+                // Clear status
+                $('#profileStatus').text('').removeClass('success error');
+            });
+        });
+        
+        // Load user information
+        function loadUserInfo(user) {
+            // Set user name
+            const fullName = user.profile && user.profile.fullName ? user.profile.fullName : user.username;
+            $('#userName').text(fullName);
+            $('#userEmail').text(user.email);
+            
+            // Set user role
+            const roleDisplay = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+            $('#userRole').text(roleDisplay);
+            
+            // Set avatar
+            if (user.profile && user.profile.avatar) {
+                $('#userAvatar').html(`<img src="${user.profile.avatar}" alt="${fullName}">`);
+            } else {
+                // Set initial letter avatar
+                const initial = fullName.charAt(0).toUpperCase();
+                $('#userAvatar').html(initial);
+            }
+            
+            // Set overview info
+            $('#overviewUsername').text(user.username);
+            $('#overviewEmail').text(user.email);
+            $('#overviewRole').text(roleDisplay);
+            
+            // Format dates
+            const createdDate = new Date(user.created);
+            $('#overviewCreated').text(formatDate(createdDate));
+            
+            if (user.lastLogin) {
+                const lastLoginDate = new Date(user.lastLogin);
+                $('#overviewLastLogin').text(formatDate(lastLoginDate));
+            } else {
+                $('#overviewLastLogin').text('First login');
+            }
+            
+            // Populate profile form
+            populateProfileForm(user);
+        }
+        
+        // Populate profile form
+        function populateProfileForm(user) {
+            if (user.profile && user.profile.fullName) {
+                const nameParts = user.profile.fullName.split(' ');
+                $('#profileFirstName').val(nameParts[0] || '');
+                $('#profileLastName').val(nameParts.slice(1).join(' ') || '');
+            } else {
+                $('#profileFirstName').val('');
+                $('#profileLastName').val('');
+            }
+            
+            $('#profileUsername').val(user.username);
+            $('#profileEmail').val(user.email);
+            
+            if (user.profile && user.profile.bio) {
+                $('#profileBio').val(user.profile.bio);
+            } else {
+                $('#profileBio').val('');
+            }
+        }
+        
+        // Format date
+        function formatDate(date) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            
+            return date.toLocaleDateString('en-US', options);
+        }
+        
+        // Show status message
+        function showStatus(elementId, type, message) {
+            const statusElement = $(`#${elementId}`);
+            statusElement.text(message)
+                .removeClass('success error')
+                .addClass(type);
+            
+            // Scroll to status
+            $('html, body').animate({
+                scrollTop: statusElement.offset().top - 100
+            }, 300);
+        }
+    </script>
+</body>
+</html> 
