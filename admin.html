@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - Project Admin</title>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .admin-section {
+            padding-top: 120px;
+        }
+        
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .admin-header h2 {
+            margin-bottom: 0;
+        }
+        
+        .project-form-container {
+            background-color: var(--text-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 40px;
+        }
+        
+        .project-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .project-form .form-group:last-child {
+            grid-column: 1 / -1;
+        }
+        
+        .project-form .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .project-list {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .project-list-header {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px 150px 100px;
+            background-color: var(--gray-100);
+            padding: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .project-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px 150px 100px;
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-200);
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .project-item:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .project-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--gray-200);
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .edit-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .delete-btn:hover {
+            background-color: #EF4444;
+            color: var(--text-light);
+        }
+        
+        .featured-toggle {
+            width: 50px;
+            height: 26px;
+            background-color: var(--gray-300);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .featured-toggle::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: var(--text-light);
+            top: 2px;
+            left: 2px;
+            transition: var(--transition);
+        }
+        
+        .featured-toggle.active {
+            background-color: var(--secondary-color);
+        }
+        
+        .featured-toggle.active::before {
+            transform: translateX(24px);
+        }
+        
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: var(--gray-500);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        @media (max-width: 768px) {
+            .project-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-list-header {
+                display: none;
+            }
+            
+            .project-item {
+                grid-template-columns: 60px 1fr auto;
+                gap: 15px;
+            }
+            
+            .project-item .project-category,
+            .project-item .project-featured {
+                display: none;
+            }
+            
+            .project-title {
+                font-weight: 600;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#skills">Skills</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="admin-section">
+        <div class="container">
+            <div class="admin-header">
+                <h2 class="section-title">Project Management</h2>
+                <button id="addProjectBtn" class="btn primary-btn">
+                    <i class="fas fa-plus"></i> Add New Project
+                </button>
+            </div>
+            
+            <div id="projectFormContainer" class="project-form-container" style="display: none;">
+                <h3>Add New Project</h3>
+                <form id="projectForm" class="project-form">
+                    <div class="form-group">
+                        <label for="projectTitle">Project Title*</label>
+                        <input type="text" id="projectTitle" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectCategory">Category*</label>
+                        <select id="projectCategory" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="web">Web Development</option>
+                            <option value="mobile">Mobile App</option>
+                            <option value="data">Data Science</option>
+                            <option value="ai">AI/ML</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectImage">Image URL*</label>
+                        <input type="text" id="projectImage" name="image" placeholder="assets/project1.jpg" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectLink">Project Link</label>
+                        <input type="text" id="projectLink" name="link" placeholder="https://example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectTags">Tags (comma separated)*</label>
+                        <input type="text" id="projectTags" name="tags" placeholder="JavaScript, React, Node.js" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectDescription">Description*</label>
+                        <textarea id="projectDescription" name="description" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group form-checkbox">
+                        <input type="checkbox" id="projectFeatured" name="featured">
+                        <label for="projectFeatured">Featured project (show on homepage)</label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelProjectBtn" class="btn secondary-btn">Cancel</button>
+                        <button type="submit" class="btn primary-btn">Save Project</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="project-list">
+                <div class="project-list-header">
+                    <div>Image</div>
+                    <div>Title</div>
+                    <div>Category</div>
+                    <div>Featured</div>
+                    <div>Actions</div>
+                </div>
+                
+                <div id="projectList">
+                    <!-- Projects will be added here dynamically -->
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No projects found. Click "Add New Project" to create your first project.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="index.html">Home</a>
+                        <a href="index.html#about">About</a>
+                        <a href="index.html#projects">Projects</a>
+                        <a href="index.html#skills">Skills</a>
+                        <a href="index.html#testimonials">Testimonials</a>
+                        <a href="index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-group">
+                        <h3>Resources</h3>
+                        <a href="#">Blog</a>
+                        <a href="#">Case Studies</a>
+                        <a href="#">Resources</a>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to my newsletter for the latest updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn primary-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="https://github.com/SKYIOUS" target="_blank">
+                        <img src="assets/github-avatar.jpg" alt="GitHub" class="social-avatar">
+                    </a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="back-to-top">
+        <a href="#" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Project management
+            let projects = JSON.parse(localStorage.getItem('projects')) || [];
+            let editingProjectId = null;
+            
+            // Initial render
+            renderProjects();
+            
+            // Add project button
+            $('#addProjectBtn').on('click', function() {
+                editingProjectId = null;
+                $('#projectForm')[0].reset();
+                $('#projectFormContainer').slideDown();
+                $('html, body').animate({
+                    scrollTop: $('#projectFormContainer').offset().top - 100
+                }, 500);
+            });
+            
+            // Cancel button
+            $('#cancelProjectBtn').on('click', function() {
+                $('#projectFormContainer').slideUp();
+            });
+            
+            // Project form submission
+            $('#projectForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const project = {
+                    id: editingProjectId || Date.now(),
+                    title: $('#projectTitle').val(),
+                    category: $('#projectCategory').val(),
+                    image: $('#projectImage').val(),
+                    link: $('#projectLink').val() || '#',
+                    tags: $('#projectTags').val().split(',').map(tag => tag.trim()),
+                    description: $('#projectDescription').val(),
+                    featured: $('#projectFeatured').is(':checked')
+                };
+                
+                if (editingProjectId) {
+                    // Update existing project
+                    projects = projects.map(p => p.id === editingProjectId ? project : p);
+                } else {
+                    // Add new project
+                    projects.push(project);
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('projects', JSON.stringify(projects));
+                
+                // Reset form and hide
+                $('#projectForm')[0].reset();
+                $('#projectFormContainer').slideUp();
+                
+                // Re-render projects
+                renderProjects();
+                
+                alert(editingProjectId ? 'Project updated successfully!' : 'Project added successfully!');
+            });
+            
+            // Render projects
+            function renderProjects() {
+                const projectList = $('#projectList');
+                
+                if (projects.length === 0) {
+                    projectList.html(`
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <p>No projects found. Click "Add New Project" to create your first project.</p>
+                        </div>
+                    `);
+                    return;
+                }
+                
+                let html = '';
+                
+                projects.forEach(project => {
+                    const categoryNames = {
+                        web: 'Web Development',
+                        mobile: 'Mobile App',
+                        data: 'Data Science',
+                        ai: 'AI/ML'
+                    };
+                    
+                    html += `
+                        <div class="project-item" data-id="${project.id}">
+                            <div>
+                                <img src="${project.image}" alt="${project.title}" class="project-preview">
+                            </div>
+                            <div class="project-title">${project.title}</div>
+                            <div class="project-category">${categoryNames[project.category] || project.category}</div>
+                            <div class="project-featured">
+                                <div class="featured-toggle ${project.featured ? 'active' : ''}" data-id="${project.id}"></div>
+                            </div>
+                            <div class="project-actions">
+                                <button class="action-btn edit-btn" data-id="${project.id}"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" data-id="${project.id}"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                projectList.html(html);
+                
+                // Attach event listeners to actions
+                $('.edit-btn').on('click', function() {
+                    const projectId = Number($(this).data('id'));
+                    editProject(projectId);
+                });
+                
+                $('.delete-btn').on('click', function() {
+                    const projectId = Number($(this).data('id'));
+                    if (confirm('Are you sure you want to delete this project?')) {
+                        deleteProject(projectId);
+                    }
+                });
+                
+                $('.featured-toggle').on('click', function() {
+                    const projectId = Number($(this).data('id'));
+                    toggleFeatured(projectId);
+                });
+            }
+            
+            // Edit project
+            function editProject(projectId) {
+                const project = projects.find(p => p.id === projectId);
+                
+                if (project) {
+                    editingProjectId = projectId;
+                    
+                    $('#projectTitle').val(project.title);
+                    $('#projectCategory').val(project.category);
+                    $('#projectImage').val(project.image);
+                    $('#projectLink').val(project.link === '#' ? '' : project.link);
+                    $('#projectTags').val(project.tags.join(', '));
+                    $('#projectDescription').val(project.description);
+                    $('#projectFeatured').prop('checked', project.featured);
+                    
+                    $('#projectFormContainer').slideDown();
+                    $('html, body').animate({
+                        scrollTop: $('#projectFormContainer').offset().top - 100
+                    }, 500);
+                }
+            }
+            
+            // Delete project
+            function deleteProject(projectId) {
+                projects = projects.filter(p => p.id !== projectId);
+                localStorage.setItem('projects', JSON.stringify(projects));
+                renderProjects();
+            }
+            
+            // Toggle featured status
+            function toggleFeatured(projectId) {
+                projects = projects.map(p => {
+                    if (p.id === projectId) {
+                        return { ...p, featured: !p.featured };
+                    }
+                    return p;
+                });
+                
+                localStorage.setItem('projects', JSON.stringify(projects));
+                renderProjects();
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="styles.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="description" content="Portfolio and projects by SKYIOUS - innovative solutions and creative development">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -17,19 +20,36 @@
                     <li><a href="#about">About</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#skills">Skills</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <div class="menu-toggle">
-                    <i class="fas fa-bars"></i>
+                <div class="nav-actions">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
                 </div>
             </nav>
             
             <div class="hero">
-                <h1>Building <span class="highlight">Innovative</span> Solutions</h1>
-                <p>Transforming ideas into reality through code and creativity</p>
-                <div class="cta-buttons">
-                    <a href="#projects" class="btn primary-btn">View Projects</a>
-                    <a href="#contact" class="btn secondary-btn">Get in Touch</a>
+                <div class="hero-content">
+                    <h1>Building <span class="highlight">Innovative</span> Solutions</h1>
+                    <p class="hero-subtitle">Transforming ideas into reality through code and creativity</p>
+                    <div class="hero-tags">
+                        <span class="tag">Web Development</span>
+                        <span class="tag">Mobile Apps</span>
+                        <span class="tag">AI Solutions</span>
+                    </div>
+                    <div class="cta-buttons">
+                        <a href="#projects" class="btn primary-btn">View Projects</a>
+                        <a href="#contact" class="btn secondary-btn">Get in Touch</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="assets/hero-illustration.svg" alt="Development Illustration">
                 </div>
             </div>
         </div>
@@ -37,11 +57,26 @@
 
     <section id="about" class="about-section">
         <div class="container">
-            <h2>About SKYIOUS</h2>
+            <h2 class="section-title">About SKYIOUS</h2>
             <div class="about-content">
                 <div class="about-text">
                     <p>SKYIOUS is dedicated to developing cutting-edge solutions that combine technical excellence with creative innovation. With a passion for building useful tools and applications, we strive to create software that makes a difference.</p>
                     <p>Founded on the principles of open-source collaboration and continuous learning, SKYIOUS embraces challenges and turns them into opportunities for growth and advancement.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Projects Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">30+</div>
+                            <div class="stat-label">Happy Clients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="about-image">
                     <img src="assets/github-avatar.jpg" alt="SKYIOUS Profile" class="profile-image">
@@ -52,65 +87,32 @@
 
     <section id="projects" class="projects-section">
         <div class="container">
-            <h2>Featured Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="assets/project1.jpg" alt="Project 1">
-                    </div>
-                    <div class="project-details">
-                        <h3>Project One</h3>
-                        <p>A comprehensive solution for data analysis and visualization with real-time processing capabilities.</p>
-                        <div class="project-tags">
-                            <span>Python</span>
-                            <span>Machine Learning</span>
-                            <span>Data Viz</span>
-                        </div>
-                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="assets/project2.jpg" alt="Project 2">
-                    </div>
-                    <div class="project-details">
-                        <h3>Project Two</h3>
-                        <p>A responsive web application providing intuitive interfaces for complex data management tasks.</p>
-                        <div class="project-tags">
-                            <span>JavaScript</span>
-                            <span>React</span>
-                            <span>Node.js</span>
-                        </div>
-                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="assets/project3.jpg" alt="Project 3">
-                    </div>
-                    <div class="project-details">
-                        <h3>Project Three</h3>
-                        <p>An innovative mobile solution that bridges the gap between online and offline experiences.</p>
-                        <div class="project-tags">
-                            <span>Flutter</span>
-                            <span>Firebase</span>
-                            <span>Mobile</span>
-                        </div>
-                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-                    </div>
+            <h2 class="section-title">Featured Projects</h2>
+            
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="mobile">Mobile</button>
+                <button class="filter-btn" data-filter="data">Data</button>
+                <button class="filter-btn" data-filter="ai">AI/ML</button>
+            </div>
+            
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be loaded dynamically from localStorage -->
+                <div class="empty-projects-message" style="display: none;">
+                    <p>No projects found. Use the <a href="admin.html">Project Admin</a> page to add your first project.</p>
                 </div>
             </div>
             <div class="view-all">
                 <a href="projects.html" class="btn secondary-btn">View All Projects</a>
+                <a href="admin.html" class="btn admin-btn"><i class="fas fa-lock"></i> Project Admin</a>
             </div>
         </div>
     </section>
 
     <section id="skills" class="skills-section">
         <div class="container">
-            <h2>Skills & Expertise</h2>
+            <h2 class="section-title">Skills & Expertise</h2>
             <div class="skills-content">
                 <div class="skill-category">
                     <h3>Programming Languages</h3>
@@ -118,18 +120,30 @@
                         <div class="skill-item">
                             <i class="fab fa-python"></i>
                             <span>Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 95%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-js"></i>
                             <span>JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 90%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-java"></i>
                             <span>Java</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 85%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-android"></i>
                             <span>Kotlin</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 80%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,18 +154,30 @@
                         <div class="skill-item">
                             <i class="fab fa-react"></i>
                             <span>React</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 92%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-node-js"></i>
                             <span>Node.js</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 88%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fas fa-database"></i>
                             <span>SQL/NoSQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 85%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-aws"></i>
                             <span>AWS</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 78%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,18 +188,30 @@
                         <div class="skill-item">
                             <i class="fab fa-docker"></i>
                             <span>Docker</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 90%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-git-alt"></i>
                             <span>Git</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 95%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-bootstrap"></i>
                             <span>Bootstrap</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 89%;"></div>
+                            </div>
                         </div>
                         <div class="skill-item">
                             <i class="fas fa-robot"></i>
                             <span>TensorFlow</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 75%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -181,9 +219,73 @@
         </div>
     </section>
 
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Client Testimonials</h2>
+            <div class="testimonials-slider">
+                <div class="testimonial-container">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <p>"SKYIOUS delivered our project on time and exceeded our expectations. Their attention to detail and technical expertise made all the difference."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="assets/testimonial1.jpg" alt="Testimonial Author" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Sarah Johnson</h4>
+                                <p>CEO, TechVision</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-container">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <p>"Working with SKYIOUS was a game-changer for our startup. Their innovative solutions helped us scale our platform and improve user engagement."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="assets/testimonial2.jpg" alt="Testimonial Author" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Michael Chen</h4>
+                                <p>Founder, GrowthLabs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-container">
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <p>"The data visualization dashboard SKYIOUS built for us has transformed how we make decisions. Our team is now able to gain insights faster than ever before."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="assets/testimonial3.jpg" alt="Testimonial Author" class="testimonial-avatar">
+                            <div class="testimonial-info">
+                                <h4>Emily Rodriguez</h4>
+                                <p>Data Science Lead, AnalyticsPro</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-controls">
+                <button class="testimonial-control prev"><i class="fas fa-chevron-left"></i></button>
+                <div class="testimonial-indicators">
+                    <span class="indicator active"></span>
+                    <span class="indicator"></span>
+                    <span class="indicator"></span>
+                </div>
+                <button class="testimonial-control next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="contact-section">
         <div class="container">
-            <h2>Get in Touch</h2>
+            <h2 class="section-title">Get in Touch</h2>
             <div class="contact-content">
                 <div class="contact-info">
                     <p>Have a project in mind or want to collaborate? I'd love to hear from you!</p>
@@ -208,6 +310,15 @@
                             <a href="#" target="_blank">Twitter Profile</a>
                         </div>
                     </div>
+                    
+                    <div class="availability">
+                        <h3>Currently Available For:</h3>
+                        <ul class="availability-list">
+                            <li><i class="fas fa-check"></i> Freelance Projects</li>
+                            <li><i class="fas fa-check"></i> Consulting Work</li>
+                            <li><i class="fas fa-check"></i> Speaking Engagements</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="contact-form">
                     <form id="contactForm">
@@ -220,10 +331,24 @@
                             <input type="email" id="email" name="email" required>
                         </div>
                         <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject">
+                                <option value="project">Project Inquiry</option>
+                                <option value="collaboration">Collaboration</option>
+                                <option value="question">General Question</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="message">Message</label>
                             <textarea id="message" name="message" rows="5" required></textarea>
                         </div>
+                        <div class="form-group form-checkbox">
+                            <input type="checkbox" id="subscribe" name="subscribe" checked>
+                            <label for="subscribe">Subscribe to newsletter</label>
+                        </div>
                         <button type="submit" class="btn primary-btn">Send Message</button>
+                        <div id="formStatus" class="form-status"></div>
                     </form>
                 </div>
             </div>
@@ -233,26 +358,54 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">SKYIOUS</div>
-                <div class="footer-links">
-                    <a href="#about">About</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#contact">Contact</a>
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
                 </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="#about">About</a>
+                        <a href="#projects">Projects</a>
+                        <a href="#skills">Skills</a>
+                        <a href="#testimonials">Testimonials</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-group">
+                        <h3>Resources</h3>
+                        <a href="blog.html">Blog</a>
+                        <a href="#">Case Studies</a>
+                        <a href="#">Resources</a>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to my newsletter for the latest updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn primary-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
                 <div class="social-links">
                     <a href="https://github.com/SKYIOUS" target="_blank">
                         <img src="assets/github-avatar.jpg" alt="GitHub" class="social-avatar">
                     </a>
                     <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
-            </div>
-            <div class="copyright">
-                &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
             </div>
         </div>
     </footer>
+
+    <div class="back-to-top">
+        <a href="#" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts.js"></script>
