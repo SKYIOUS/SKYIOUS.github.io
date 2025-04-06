@@ -117,57 +117,97 @@ $(document).ready(function() {
         }
     });
     
-    // Testimonials slider
-    const testimonialSlider = $('.testimonials-slider');
-    const testimonialItems = $('.testimonial-container');
-    const indicators = $('.indicator');
-    let currentSlide = 0;
-    const totalSlides = testimonialItems.length;
-    
-    // Set initial active slide
-    updateSlider();
-    
-    // Next button
-    $('.testimonial-control.next').on('click', function() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    });
-    
-    // Previous button
-    $('.testimonial-control.prev').on('click', function() {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateSlider();
-    });
-    
-    // Indicator clicks
-    indicators.each(function(index) {
-        $(this).on('click', function() {
-            currentSlide = index;
-            updateSlider();
-        });
-    });
-    
-    // Auto slide every 5 seconds
-    let autoSlide = setInterval(function() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    }, 5000);
-    
-    // Pause auto slide on hover
-    testimonialSlider.hover(
-        function() { clearInterval(autoSlide); },
-        function() { 
-            autoSlide = setInterval(function() {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                updateSlider();
-            }, 5000);
+    // Custom hash function for password security
+    function customHash(str) {
+        let hash = 0;
+        const salt = "SKYIOUS";
+        const peppered = salt + str + "secure";
+        
+        // Iterate through each character in the string
+        for (let i = 0; i < peppered.length; i++) {
+            // Get character code
+            const char = peppered.charCodeAt(i);
+            // Update hash using a custom formula
+            hash = ((hash << 5) - hash) + char;
+            // Convert to 32-bit integer
+            hash = hash & hash;
         }
-    );
+        
+        // Add additional complexity
+        hash = Math.abs(hash);
+        let hashStr = hash.toString(16); // Convert to hex
+        
+        // Ensure consistent length by padding
+        while (hashStr.length < 8) {
+            hashStr = '0' + hashStr;
+        }
+        
+        // Add timestamp-based component for additional uniqueness
+        const timestamp = new Date().getTime() % 1000;
+        const timestampHex = timestamp.toString(16).padStart(3, '0');
+        
+        return hashStr + timestampHex;
+    }
     
-    function updateSlider() {
-        testimonialItems.css('transform', `translateX(-${currentSlide * 100}%)`);
-        indicators.removeClass('active');
-        indicators.eq(currentSlide).addClass('active');
+    // Check if user is logged in
+    function checkAuth() {
+        return localStorage.getItem('isLoggedIn') === 'true';
+    }
+    
+    // Handle login form submission
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const username = $('#username').val().trim();
+        const password = $('#password').val().trim();
+        
+        // Default credentials (in real-world scenario, these should not be hardcoded)
+        const correctUsername = 'admin';
+        const correctPasswordHash = 'e5c3abb7a26';
+        
+        if (username === correctUsername) {
+            // Hash the entered password
+            const hashedPassword = customHash(password);
+            console.log('Debug hash:', hashedPassword.substring(0, 10)); // Only for testing
+            
+            // Check if the first 10 characters match
+            // (we only compare part of the hash since our hash includes a timestamp component)
+            if (hashedPassword.substring(0, 10).includes(correctPasswordHash.substring(0, 8))) {
+                // Set logged in state
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Show success message
+                showLoginStatus('success', 'Login successful! Redirecting...');
+                
+                // Redirect to admin page
+                setTimeout(function() {
+                    window.location.href = 'admin.html';
+                }, 1000);
+            } else {
+                showLoginStatus('error', 'Incorrect password');
+            }
+        } else {
+            showLoginStatus('error', 'Username not found');
+        }
+    });
+    
+    function showLoginStatus(type, message) {
+        const statusElement = $('#loginStatus');
+        statusElement.text(message)
+            .removeClass('success error')
+            .addClass(type);
+    }
+    
+    // Logout functionality
+    $('#logoutBtn').on('click', function(e) {
+        e.preventDefault();
+        localStorage.setItem('isLoggedIn', 'false');
+        window.location.href = 'login.html';
+    });
+    
+    // Redirect to login page if not logged in and trying to access admin page
+    if (window.location.pathname.includes('admin.html') && !checkAuth()) {
+        window.location.href = 'login.html';
     }
     
     // Contact form submission
@@ -232,7 +272,7 @@ $(document).ready(function() {
     }
     
     // Add animation classes to elements
-    $('.project-card, .skill-item, .about-image, .stat-item, .testimonial').addClass('animate-on-scroll');
+    $('.project-card, .feature-card, .about-image, .stat-item').addClass('animate-on-scroll');
     
     // Initial animation check
     animateOnScroll();

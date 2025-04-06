@@ -157,6 +157,26 @@
             opacity: 0.3;
         }
         
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .logout-btn {
+            background-color: var(--gray-600);
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .logout-btn i {
+            margin-right: 8px;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--gray-700);
+        }
+        
         @media (max-width: 768px) {
             .project-form {
                 grid-template-columns: 1fr;
@@ -191,8 +211,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="index.html#about">About</a></li>
                     <li><a href="index.html#projects">Projects</a></li>
-                    <li><a href="index.html#skills">Skills</a></li>
-                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#features">Features</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
                 </ul>
                 <div class="nav-actions">
@@ -212,9 +231,14 @@
         <div class="container">
             <div class="admin-header">
                 <h2 class="section-title">Project Management</h2>
-                <button id="addProjectBtn" class="btn primary-btn">
-                    <i class="fas fa-plus"></i> Add New Project
-                </button>
+                <div class="admin-actions">
+                    <button id="addProjectBtn" class="btn primary-btn">
+                        <i class="fas fa-plus"></i> Add New Project
+                    </button>
+                    <button id="logoutBtn" class="btn logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
             </div>
             
             <div id="projectFormContainer" class="project-form-container" style="display: none;">
@@ -301,8 +325,7 @@
                         <a href="index.html">Home</a>
                         <a href="index.html#about">About</a>
                         <a href="index.html#projects">Projects</a>
-                        <a href="index.html#skills">Skills</a>
-                        <a href="index.html#testimonials">Testimonials</a>
+                        <a href="index.html#features">Features</a>
                         <a href="index.html#contact">Contact</a>
                     </div>
                     <div class="footer-links-group">
