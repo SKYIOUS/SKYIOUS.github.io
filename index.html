@@ -25,6 +25,10 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <div class="nav-actions">
+                    <div class="account-link">
+                        <a href="account/login.html" id="loginLink">Login</a>
+                        <a href="account/dashboard.html" id="dashboardLink" style="display: none;">My Account</a>
+                    </div>
                     <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
                         <i class="fas fa-moon"></i>
                         <i class="fas fa-sun"></i>
@@ -111,12 +115,11 @@
             <div class="projects-grid" id="projectsGrid">
                 <!-- Projects will be loaded dynamically from localStorage -->
                 <div class="empty-projects-message" style="display: none;">
-                    <p>No projects found. Use the <a href="admin.html">Project Admin</a> page to add your first project.</p>
+                    <p>No projects found. Please check back later for updates.</p>
                 </div>
             </div>
             <div class="view-all">
                 <a href="projects.html" class="btn secondary-btn">View All Projects</a>
-                <a href="admin.html" class="btn admin-btn"><i class="fas fa-lock"></i> Project Admin</a>
             </div>
         </div>
     </section>
@@ -316,5 +319,125 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts.js"></script>
+    <script src="security.js"></script>
+    <script src="navigation.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Set default theme on page load
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            $('html').attr('data-theme', savedTheme);
+
+            // Set current year in footer
+            $('#currentYear').text(new Date().getFullYear());
+
+            // Technology expertise chart
+            const ctx = document.getElementById('technologiesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['JavaScript', 'Python', 'React', 'Node.js', 'Data Science', 'UI/UX'],
+                    datasets: [{
+                        label: 'Skill Level',
+                        data: [90, 85, 80, 75, 65, 70],
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            // Load projects from localStorage
+            loadProjects();
+            
+            // Project filter functionality
+            $('.filter-btn').on('click', function() {
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                const filter = $(this).data('filter');
+                filterProjects(filter);
+            });
+            
+            // Newsletter form submission
+            $('.newsletter-form').on('submit', function(e) {
+                e.preventDefault();
+                const email = $(this).find('input[type="email"]').val();
+                
+                if (email) {
+                    $(this).html('<p class="success-message">Thank you for subscribing!</p>');
+                }
+            });
+            
+            // Contact form submission
+            $('#contactForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const name = $('#name').val();
+                const email = $('#email').val();
+                const message = $('#message').val();
+                
+                if (name && email && message) {
+                    // Simulating form submission
+                    $('#contactForm').html('<div class="success-message"><i class="fas fa-check-circle"></i> Thanks for your message! I\'ll get back to you soon.</div>');
+                }
+            });
+        });
+        
+        function loadProjects() {
+            const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            const projectsGrid = $('#projectsGrid');
+            
+            if (projects.length === 0) {
+                $('.empty-projects-message').show();
+                return;
+            }
+            
+            projects.slice(0, 6).forEach(project => {
+                const projectCard = `
+                    <div class="project-card" data-category="${project.category}">
+                        <div class="project-image">
+                            <img src="${project.image}" alt="${project.title}">
+                        </div>
+                        <div class="project-content">
+                            <h3>${project.title}</h3>
+                            <p>${project.description}</p>
+                            <div class="project-tags">
+                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            <div class="project-links">
+                                ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="project-link github"><i class="fab fa-github"></i></a>` : ''}
+                                ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" class="project-link live"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                projectsGrid.append(projectCard);
+            });
+        }
+        
+        function filterProjects(filter) {
+            if (filter === 'all') {
+                $('.project-card').show();
+            } else {
+                $('.project-card').hide();
+                $(`.project-card[data-category="${filter}"]`).show();
+            }
+        }
+    </script>
 </body>
 </html> 

@@ -484,27 +484,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../security.js"></script>
     <script src="../scripts.js"></script>
+    <script src="../navigation.js"></script>
     <script>
         $(document).ready(function() {
-            // Check if user is logged in
-            if (Security.isLoggedIn()) {
-                $('#loginLink').hide();
-                $('#dashboardLink').show();
-            } else {
-                $('#loginLink').show();
-                $('#dashboardLink').hide();
-            }
-            
-            // Set current year in copyright
-            const currentYear = new Date().getFullYear();
-            $('#currentYear').text(currentYear);
-            
             // Newsletter form submission
             $('.newsletter-form').on('submit', function(e) {
                 e.preventDefault();
                 alert('Thank you for subscribing to our newsletter!');
                 $(this).find('input').val('');
             });
+            
+            // Set current year in footer
+            $('#currentYear').text(new Date().getFullYear());
         });
     </script>
 </body>

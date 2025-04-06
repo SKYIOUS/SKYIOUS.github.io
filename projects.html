@@ -108,23 +108,7 @@
     <header class="projects-header">
         <div class="container">
             <nav>
-                <div class="logo">SKYIOUS</div>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="#" class="active">Projects</a></li>
-                    <li><a href="index.html#features">Features</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
-                <div class="nav-actions">
-                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
-                        <i class="fas fa-moon"></i>
-                        <i class="fas fa-sun"></i>
-                    </button>
-                    <div class="menu-toggle">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                </div>
+                <!-- Navigation will be inserted by navigation.js -->
             </nav>
             
             <h1>All Projects</h1>
@@ -152,13 +136,12 @@
             <div class="projects-grid" id="projectsGrid">
                 <!-- Projects will be loaded dynamically from localStorage -->
                 <div class="empty-projects-message" style="display: none;">
-                    <p>No projects found. Use the <a href="admin.html">Project Admin</a> page to add your first project.</p>
+                    <p>No projects found. Please check back later for updates.</p>
                 </div>
             </div>
             
             <div class="back-home">
                 <a href="index.html" class="btn secondary-btn">Back to Home</a>
-                <a href="admin.html" class="btn admin-btn"><i class="fas fa-lock"></i> Project Admin</a>
             </div>
         </div>
     </section>
@@ -217,5 +200,107 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts.js"></script>
+    <script src="security.js"></script>
+    <script src="navigation.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Load projects
+            loadAllProjects();
+            
+            // Project search functionality
+            $('#projectSearch').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                filterProjectsBySearch(searchTerm);
+            });
+            
+            // Project filter by category
+            $('.filter-btn').on('click', function() {
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                
+                const filter = $(this).data('filter');
+                filterProjectsByCategory(filter);
+            });
+            
+            // Set current year in footer
+            $('#currentYear').text(new Date().getFullYear());
+        });
+        
+        function loadAllProjects() {
+            const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            const projectsGrid = $('#projectsGrid');
+            
+            // Clear grid except for the empty message
+            projectsGrid.find(':not(.empty-projects-message)').remove();
+            
+            if (projects.length === 0) {
+                $('.empty-projects-message').show();
+                return;
+            }
+            
+            $('.empty-projects-message').hide();
+            
+            projects.forEach(project => {
+                const projectCard = `
+                    <div class="project-card" data-category="${project.category}">
+                        <div class="project-image">
+                            <img src="${project.image}" alt="${project.title}">
+                        </div>
+                        <div class="project-content">
+                            <h3>${project.title}</h3>
+                            <p>${project.description}</p>
+                            <div class="project-tags">
+                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            <div class="project-links">
+                                ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="project-link github"><i class="fab fa-github"></i></a>` : ''}
+                                ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" class="project-link live"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                projectsGrid.append(projectCard);
+            });
+        }
+        
+        function filterProjectsBySearch(searchTerm) {
+            $('.project-card').each(function() {
+                const title = $(this).find('h3').text().toLowerCase();
+                const description = $(this).find('p').text().toLowerCase();
+                const tags = $(this).find('.tag').text().toLowerCase();
+                
+                const matchFound = title.includes(searchTerm) || 
+                                  description.includes(searchTerm) ||
+                                  tags.includes(searchTerm);
+                
+                $(this).toggle(matchFound);
+            });
+            
+            // Check if we need to show the empty message
+            if ($('.project-card:visible').length === 0) {
+                $('.empty-projects-message').show();
+            } else {
+                $('.empty-projects-message').hide();
+            }
+        }
+        
+        function filterProjectsByCategory(category) {
+            if (category === 'all') {
+                $('.project-card').show();
+            } else {
+                $('.project-card').each(function() {
+                    $(this).toggle($(this).data('category') === category);
+                });
+            }
+            
+            // Check if we need to show the empty message
+            if ($('.project-card:visible').length === 0) {
+                $('.empty-projects-message').show();
+            } else {
+                $('.empty-projects-message').hide();
+            }
+        }
+    </script>
 </body>
 </html> 

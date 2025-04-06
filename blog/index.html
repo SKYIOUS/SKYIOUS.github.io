@@ -310,7 +310,7 @@
                     <li><a href="../index.html#about">About</a></li>
                     <li><a href="../index.html#projects">Projects</a></li>
                     <li><a href="../index.html#features">Features</a></li>
-                    <li><a href="#" class="active">Blog</a></li>
+                    <li><a href="../blog/">Blog</a></li>
                     <li><a href="../resources/">Resources</a></li>
                     <li><a href="../index.html#contact">Contact</a></li>
                 </ul>
@@ -435,207 +435,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../security.js"></script>
     <script src="../scripts.js"></script>
+    <script src="../navigation.js"></script>
     <script>
         $(document).ready(function() {
-            // Check if user is logged in
-            if (Security.isLoggedIn()) {
-                $('#loginLink').hide();
-                $('#dashboardLink').show();
-            } else {
-                $('#loginLink').show();
-                $('#dashboardLink').hide();
-            }
-            
             // Initialize blogs
-            initBlogs();
+            initializeBlogs();
             
-            // Load sample blogs
-            loadBlogs();
-            
-            // Category filter
+            // Blog category filter
             $('.category-filter').on('click', function() {
                 $('.category-filter').removeClass('active');
                 $(this).addClass('active');
                 
                 const category = $(this).data('category');
-                filterBlogs(category);
-            });
-            
-            // Search functionality
-            $('#blogSearch').on('input', function() {
-                const searchTerm = $(this).val().toLowerCase().trim();
-                searchBlogs(searchTerm);
-            });
-            
-            // Initialize blogs in localStorage if not exists
-            function initBlogs() {
-                if (!localStorage.getItem('skyious_blogs')) {
-                    // Create sample blogs
-                    const sampleBlogs = [
-                        {
-                            id: 1,
-                            title: 'The Future of Web Development: Trends to Watch in 2023',
-                            excerpt: 'Explore the emerging technologies and methodologies that will shape web development in the coming year, from serverless architectures to AI-driven interfaces.',
-                            content: 'Full content of the blog post goes here...',
-                            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80',
-                            category: 'technology',
-                            author: {
-                                name: 'John Smith',
-                                avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-                                role: 'Lead Developer'
-                            },
-                            created: '2023-06-15T10:30:00Z',
-                            updated: '2023-06-15T10:30:00Z',
-                            slug: 'future-web-development-trends-2023'
-                        },
-                        {
-                            id: 2,
-                            title: 'Creating Stunning UI Animations with CSS and JavaScript',
-                            excerpt: 'Learn how to enhance user experience with smooth, purposeful animations that bring your interface to life without sacrificing performance.',
-                            content: 'Full content of the blog post goes here...',
-                            image: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                            category: 'design',
-                            author: {
-                                name: 'Emily Johnson',
-                                avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-                                role: 'UI/UX Designer'
-                            },
-                            created: '2023-06-10T14:45:00Z',
-                            updated: '2023-06-10T14:45:00Z',
-                            slug: 'creating-ui-animations-css-javascript'
-                        },
-                        {
-                            id: 3,
-                            title: 'Optimizing React Applications for Performance',
-                            excerpt: 'Discover practical strategies to improve the performance of your React applications, from code splitting to memoization and virtual DOM optimization.',
-                            content: 'Full content of the blog post goes here...',
-                            image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                            category: 'development',
-                            author: {
-                                name: 'Michael Brown',
-                                avatar: 'https://randomuser.me/api/portraits/men/76.jpg',
-                                role: 'Frontend Developer'
-                            },
-                            created: '2023-06-05T09:15:00Z',
-                            updated: '2023-06-06T11:20:00Z',
-                            slug: 'optimizing-react-applications-performance'
-                        },
-                        {
-                            id: 4,
-                            title: 'Building Secure Authentication Systems',
-                            excerpt: 'Learn the best practices for implementing secure user authentication in your web applications, from password hashing to multi-factor authentication.',
-                            content: 'Full content of the blog post goes here...',
-                            image: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                            category: 'tutorial',
-                            author: {
-                                name: 'Sarah Miller',
-                                avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
-                                role: 'Security Specialist'
-                            },
-                            created: '2023-05-28T16:30:00Z',
-                            updated: '2023-05-28T16:30:00Z',
-                            slug: 'building-secure-authentication-systems'
-                        },
-                        {
-                            id: 5,
-                            title: 'The Impact of AI on Modern Web Applications',
-                            excerpt: 'Explore how artificial intelligence is transforming web development and user experiences, from chatbots to personalized content delivery.',
-                            content: 'Full content of the blog post goes here...',
-                            image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80',
-                            category: 'insights',
-                            author: {
-                                name: 'David Wilson',
-                                avatar: 'https://randomuser.me/api/portraits/men/45.jpg',
-                                role: 'AI Researcher'
-                            },
-                            created: '2023-05-20T11:45:00Z',
-                            updated: '2023-05-21T09:10:00Z',
-                            slug: 'impact-ai-modern-web-applications'
-                        },
-                        {
-                            id: 6,
-                            title: 'Introduction to Web3 and Blockchain Development',
-                            excerpt: 'Get started with blockchain development and understand the fundamentals of Web3 technologies, from smart contracts to decentralized applications.',
-                            content: 'Full content of the blog post goes here...',
-                            image: 'https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80',
-                            category: 'technology',
-                            author: {
-                                name: 'Alex Chen',
-                                avatar: 'https://randomuser.me/api/portraits/men/29.jpg',
-                                role: 'Blockchain Developer'
-                            },
-                            created: '2023-05-15T13:20:00Z',
-                            updated: '2023-05-15T13:20:00Z',
-                            slug: 'introduction-web3-blockchain-development'
-                        }
-                    ];
-                    
-                    localStorage.setItem('skyious_blogs', JSON.stringify(sampleBlogs));
-                }
-            }
-            
-            // Load blogs from localStorage
-            function loadBlogs() {
-                const blogs = JSON.parse(localStorage.getItem('skyious_blogs') || '[]');
-                
-                if (blogs.length === 0) {
-                    $('#blogGrid').hide();
-                    $('#blogPagination').hide();
-                    $('#emptyBlogs').show();
-                    return;
-                }
-                
-                $('#blogGrid').empty();
-                
-                blogs.forEach(blog => {
-                    const blogCard = createBlogCard(blog);
-                    $('#blogGrid').append(blogCard);
-                });
-                
-                // Show blog grid and pagination
-                $('#blogGrid').show();
-                $('#blogPagination').show();
-                $('#emptyBlogs').hide();
-            }
-            
-            // Create blog card
-            function createBlogCard(blog) {
-                const date = new Date(blog.created);
-                const formattedDate = date.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                return `
-                    <article class="blog-card" data-category="${blog.category}">
-                        <div class="blog-image">
-                            <img src="${blog.image}" alt="${blog.title}">
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">
-                                <span class="blog-category">${blog.category}</span>
-                                <span class="blog-date"><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
-                            </div>
-                            <h3 class="blog-title">${blog.title}</h3>
-                            <p class="blog-excerpt">${blog.excerpt}</p>
-                            <a href="post.html?slug=${blog.slug}" class="btn text-btn">Read More <i class="fas fa-arrow-right"></i></a>
-                            <div class="blog-author">
-                                <div class="author-avatar">
-                                    <img src="${blog.author.avatar}" alt="${blog.author.name}">
-                                </div>
-                                <div class="author-info">
-                                    <div class="author-name">${blog.author.name}</div>
-                                    <div class="author-role">${blog.author.role}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            }
-            
-            // Filter blogs by category
-            function filterBlogs(category) {
                 if (category === 'all') {
                     $('.blog-card').show();
                 } else {
@@ -643,59 +454,120 @@
                     $(`.blog-card[data-category="${category}"]`).show();
                 }
                 
-                // Check if any blogs are visible
+                // Check if we need to show empty message
                 if ($('.blog-card:visible').length === 0) {
-                    $('#emptyBlogs').show();
-                    $('#blogPagination').hide();
+                    $('#emptyBlogsMessage').show();
                 } else {
-                    $('#emptyBlogs').hide();
-                    $('#blogPagination').show();
+                    $('#emptyBlogsMessage').hide();
                 }
-            }
+            });
             
-            // Search blogs
-            function searchBlogs(searchTerm) {
-                if (!searchTerm) {
-                    // If search term is empty, show all blogs
-                    $('.blog-card').show();
-                    
-                    // Reset category filter
-                    const activeCategory = $('.category-filter.active').data('category');
-                    if (activeCategory !== 'all') {
-                        filterBlogs(activeCategory);
-                    }
-                } else {
-                    // Hide all blogs first
-                    $('.blog-card').hide();
-                    
-                    // Show blogs that match the search term
+            // Blog search
+            $('#blogSearch').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                
+                if (searchTerm.length > 0) {
                     $('.blog-card').each(function() {
                         const title = $(this).find('.blog-title').text().toLowerCase();
                         const excerpt = $(this).find('.blog-excerpt').text().toLowerCase();
-                        const category = $(this).data('category').toLowerCase();
+                        const author = $(this).find('.author-name').text().toLowerCase();
+                        const category = $(this).find('.blog-category').text().toLowerCase();
                         
-                        if (title.includes(searchTerm) || excerpt.includes(searchTerm) || category.includes(searchTerm)) {
-                            $(this).show();
-                        }
+                        const matchFound = title.includes(searchTerm) || 
+                                          excerpt.includes(searchTerm) || 
+                                          author.includes(searchTerm) ||
+                                          category.includes(searchTerm);
+                        
+                        $(this).toggle(matchFound);
                     });
+                    
+                    // Reset category filter
+                    $('.category-filter').removeClass('active');
+                    $('.category-filter[data-category="all"]').addClass('active');
+                } else {
+                    // If search is cleared, show all blogs
+                    $('.blog-card').show();
                 }
                 
-                // Check if any blogs are visible
+                // Check if we need to show empty message
                 if ($('.blog-card:visible').length === 0) {
-                    $('#emptyBlogs').show();
-                    $('#blogPagination').hide();
+                    $('#emptyBlogsMessage').show();
                 } else {
-                    $('#emptyBlogs').hide();
-                    $('#blogPagination').show();
+                    $('#emptyBlogsMessage').hide();
                 }
+            });
+            
+            // Set current year in footer
+            $('#currentYear').text(new Date().getFullYear());
+        });
+        
+        function initializeBlogs() {
+            const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
+            const blogGrid = $('.blog-grid');
+            
+            if (blogs.length === 0) {
+                $('#emptyBlogsMessage').show();
+                return;
             }
             
-            // Pagination functionality (simplified for demo)
-            $('.pagination-item').not('#prevPage, #nextPage').on('click', function() {
-                $('.pagination-item').removeClass('active');
-                $(this).addClass('active');
+            // Sort blogs by date (newest first)
+            blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            blogs.forEach(blog => {
+                const date = new Date(blog.date);
+                const formattedDate = `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                
+                const blogCard = `
+                    <div class="blog-card" data-category="${blog.category}">
+                        <div class="blog-image">
+                            <img src="${blog.image}" alt="${blog.title}">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span class="blog-category">${blog.category}</span>
+                                <span class="blog-date"><i class="far fa-calendar"></i> ${formattedDate}</span>
+                            </div>
+                            <h3 class="blog-title">${blog.title}</h3>
+                            <p class="blog-excerpt">${blog.content.substring(0, 150)}${blog.content.length > 150 ? '...' : ''}</p>
+                            <a href="post.html?id=${blog.id}" class="btn text-btn">Read More <i class="fas fa-arrow-right"></i></a>
+                            <div class="blog-author">
+                                <div class="author-avatar">
+                                    <img src="../assets/github-avatar.jpg" alt="${blog.author}">
+                                </div>
+                                <div class="author-info">
+                                    <div class="author-name">${blog.author}</div>
+                                    <div class="author-role">Author</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                blogGrid.append(blogCard);
             });
-        });
+            
+            // Update category counts
+            updateCategoryCounts();
+        }
+        
+        function updateCategoryCounts() {
+            const categories = {};
+            
+            // Count blog posts in each category
+            $('.blog-card').each(function() {
+                const category = $(this).data('category');
+                categories[category] = (categories[category] || 0) + 1;
+            });
+            
+            // Update category filter badges
+            Object.keys(categories).forEach(category => {
+                $(`.category-filter[data-category="${category}"]`).append(` <span class="count">(${categories[category]})</span>`);
+            });
+            
+            // Update "All" category
+            const total = $('.blog-card').length;
+            $('.category-filter[data-category="all"]').append(` <span class="count">(${total})</span>`);
+        }
     </script>
 </body>
 </html> 
