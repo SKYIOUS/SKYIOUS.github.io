@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - Projects</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="Portfolio and projects by SKYIOUS - innovative solutions and creative development">
+    <style>
+        /* Additional styles for projects page */
+        .project-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: var(--gray-200);
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .projects-grid {
+            margin-bottom: 60px;
+        }
+        
+        .back-home {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="projects-header">
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="#" class="active">Projects</a></li>
+                    <li><a href="index.html#skills">Skills</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="projects-section">
+        <div class="container">
+            <h2>All Projects</h2>
+            
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Dev</button>
+                <button class="filter-btn" data-filter="mobile">Mobile</button>
+                <button class="filter-btn" data-filter="data">Data Science</button>
+                <button class="filter-btn" data-filter="ai">AI/ML</button>
+            </div>
+            
+            <div class="projects-grid">
+                <!-- Web Development Projects -->
+                <div class="project-card" data-category="web">
+                    <div class="project-image">
+                        <img src="assets/project1.jpg" alt="Project 1">
+                    </div>
+                    <div class="project-details">
+                        <h3>E-commerce Platform</h3>
+                        <p>A full-featured e-commerce solution with inventory management, payment processing, and customer analytics.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="web">
+                    <div class="project-image">
+                        <img src="assets/project2.jpg" alt="Project 2">
+                    </div>
+                    <div class="project-details">
+                        <h3>Content Management System</h3>
+                        <p>A custom CMS built for content creators with robust publishing workflows and multimedia support.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>Express</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Projects -->
+                <div class="project-card" data-category="mobile">
+                    <div class="project-image">
+                        <img src="assets/project3.jpg" alt="Project 3">
+                    </div>
+                    <div class="project-details">
+                        <h3>Fitness Tracking App</h3>
+                        <p>A mobile application for tracking workouts, nutrition, and health metrics with personalized insights.</p>
+                        <div class="project-tags">
+                            <span>Flutter</span>
+                            <span>Firebase</span>
+                            <span>Health API</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="mobile">
+                    <div class="project-image">
+                        <img src="assets/project4.jpg" alt="Project 4">
+                    </div>
+                    <div class="project-details">
+                        <h3>Travel Companion</h3>
+                        <p>A travel assistant app with offline mapping, local recommendations, and itinerary planning features.</p>
+                        <div class="project-tags">
+                            <span>React Native</span>
+                            <span>GraphQL</span>
+                            <span>Maps API</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Data Science Projects -->
+                <div class="project-card" data-category="data">
+                    <div class="project-image">
+                        <img src="assets/project5.jpg" alt="Project 5">
+                    </div>
+                    <div class="project-details">
+                        <h3>Data Visualization Dashboard</h3>
+                        <p>An interactive dashboard for exploring and visualizing complex datasets with real-time filtering.</p>
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>D3.js</span>
+                            <span>Pandas</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="data">
+                    <div class="project-image">
+                        <img src="assets/project6.jpg" alt="Project 6">
+                    </div>
+                    <div class="project-details">
+                        <h3>Market Analysis Tool</h3>
+                        <p>A comprehensive market analysis platform with predictive modeling and competitor benchmarking.</p>
+                        <div class="project-tags">
+                            <span>R</span>
+                            <span>Shiny</span>
+                            <span>SQL</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- AI/ML Projects -->
+                <div class="project-card" data-category="ai">
+                    <div class="project-image">
+                        <img src="assets/project7.jpg" alt="Project 7">
+                    </div>
+                    <div class="project-details">
+                        <h3>Natural Language Processing API</h3>
+                        <p>An API for sentiment analysis, text classification, and entity recognition with high accuracy.</p>
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>BERT</span>
+                            <span>FastAPI</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="ai">
+                    <div class="project-image">
+                        <img src="assets/project8.jpg" alt="Project 8">
+                    </div>
+                    <div class="project-details">
+                        <h3>Computer Vision Solution</h3>
+                        <p>A machine learning system for object detection and image classification in industrial environments.</p>
+                        <div class="project-tags">
+                            <span>TensorFlow</span>
+                            <span>OpenCV</span>
+                            <span>Docker</span>
+                        </div>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-home">
+                <a href="index.html" class="btn secondary-btn">Back to Home</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">SKYIOUS</div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#about">About</a>
+                    <a href="#">Projects</a>
+                    <a href="index.html#skills">Skills</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html> 
