@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - Tutorials</title>
+    <link rel="stylesheet" href="../../styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .tutorials-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .tutorials-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .tutorials-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .tutorials-header p {
+            color: var(--gray-600);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .tutorials-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .filter-categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .category-filter {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background-color: var(--text-light);
+            border: 1px solid var(--gray-300);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .category-filter:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .category-filter.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+        
+        .tutorials-search {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .tutorials-search input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--gray-300);
+            background-color: var(--text-light);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .tutorials-search input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            outline: none;
+        }
+        
+        .tutorials-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .tutorials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .tutorial-card {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .tutorial-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .tutorial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .tutorial-card:hover .tutorial-image img {
+            transform: scale(1.05);
+        }
+        
+        .tutorial-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tutorial-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+        }
+        
+        .tutorial-level {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tutorial-duration {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tutorial-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .tutorial-description {
+            color: var(--gray-600);
+            margin-bottom: 15px;
+            flex: 1;
+        }
+        
+        .tutorial-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .tutorial-tag {
+            background-color: var(--gray-100);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--gray-700);
+        }
+        
+        .empty-tutorials {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            display: none;
+        }
+        
+        .empty-tutorials i {
+            font-size: 3rem;
+            color: var(--gray-400);
+            margin-bottom: 20px;
+        }
+        
+        .empty-tutorials h3 {
+            margin-bottom: 10px;
+        }
+        
+        .empty-tutorials p {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .tutorials-filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .tutorials-search {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tutorials-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tutorials-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .tutorials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../../index.html#about">About</a></li>
+                    <li><a href="../../index.html#projects">Projects</a></li>
+                    <li><a href="../../index.html#features">Features</a></li>
+                    <li><a href="../../blog/">Blog</a></li>
+                    <li><a href="../" class="active">Resources</a></li>
+                    <li><a href="../../index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="account-link">
+                        <a href="../../account/login.html" id="loginLink">Login</a>
+                        <a href="../../account/dashboard.html" id="dashboardLink" style="display: none;">My Account</a>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="tutorials-container">
+        <div class="container">
+            <div class="tutorials-header">
+                <h1>Step-by-Step Tutorials</h1>
+                <p>Learn at your own pace with our detailed tutorials, covering a wide range of technologies and skills for beginners and advanced developers.</p>
+            </div>
+            
+            <div class="tutorials-filters">
+                <div class="filter-categories">
+                    <button class="category-filter active" data-category="all">All</button>
+                    <button class="category-filter" data-category="javascript">JavaScript</button>
+                    <button class="category-filter" data-category="css">CSS</button>
+                    <button class="category-filter" data-category="html">HTML</button>
+                    <button class="category-filter" data-category="react">React</button>
+                    <button class="category-filter" data-category="node">Node.js</button>
+                </div>
+                
+                <div class="tutorials-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="tutorialSearch" placeholder="Search tutorials...">
+                </div>
+            </div>
+            
+            <div class="tutorials-grid" id="tutorialsGrid">
+                <!-- Tutorial 1 -->
+                <div class="tutorial-card" data-category="javascript">
+                    <div class="tutorial-image">
+                        <img src="https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="JavaScript Fundamentals">
+                    </div>
+                    <div class="tutorial-content">
+                        <div class="tutorial-meta">
+                            <span class="tutorial-level"><i class="fas fa-layer-group"></i> Beginner</span>
+                            <span class="tutorial-duration"><i class="far fa-clock"></i> 2 hours</span>
+                        </div>
+                        <h3 class="tutorial-title">JavaScript Fundamentals: Variables, Functions, and Control Flow</h3>
+                        <p class="tutorial-description">Learn the core concepts of JavaScript programming, including variable declarations, function definitions, and control flow structures.</p>
+                        <div class="tutorial-tags">
+                            <span class="tutorial-tag">JavaScript</span>
+                            <span class="tutorial-tag">Beginner</span>
+                            <span class="tutorial-tag">Web Development</span>
+                        </div>
+                        <a href="javascript-basics.html" class="btn primary-btn">Start Tutorial</a>
+                    </div>
+                </div>
+                
+                <!-- Tutorial 2 -->
+                <div class="tutorial-card" data-category="css">
+                    <div class="tutorial-image">
+                        <img src="https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" alt="CSS Grid and Flexbox">
+                    </div>
+                    <div class="tutorial-content">
+                        <div class="tutorial-meta">
+                            <span class="tutorial-level"><i class="fas fa-layer-group"></i> Intermediate</span>
+                            <span class="tutorial-duration"><i class="far fa-clock"></i> 1.5 hours</span>
+                        </div>
+                        <h3 class="tutorial-title">Mastering CSS Grid and Flexbox for Modern Layouts</h3>
+                        <p class="tutorial-description">Explore the power of CSS Grid and Flexbox to create responsive, flexible layouts for modern web applications.</p>
+                        <div class="tutorial-tags">
+                            <span class="tutorial-tag">CSS</span>
+                            <span class="tutorial-tag">Layout</span>
+                            <span class="tutorial-tag">Responsive Design</span>
+                        </div>
+                        <a href="css-grid.html" class="btn primary-btn">Start Tutorial</a>
+                    </div>
+                </div>
+                
+                <!-- Tutorial 3 -->
+                <div class="tutorial-card" data-category="html">
+                    <div class="tutorial-image">
+                        <img src="https://images.unsplash.com/photo-1621839673705-6617adf9e890?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80" alt="Responsive Web Design">
+                    </div>
+                    <div class="tutorial-content">
+                        <div class="tutorial-meta">
+                            <span class="tutorial-level"><i class="fas fa-layer-group"></i> Beginner</span>
+                            <span class="tutorial-duration"><i class="far fa-clock"></i> 1 hour</span>
+                        </div>
+                        <h3 class="tutorial-title">Building Responsive Websites: From Desktop to Mobile</h3>
+                        <p class="tutorial-description">Learn how to design and implement responsive websites that look and function well on all devices, from desktops to smartphones.</p>
+                        <div class="tutorial-tags">
+                            <span class="tutorial-tag">HTML</span>
+                            <span class="tutorial-tag">CSS</span>
+                            <span class="tutorial-tag">Mobile</span>
+                        </div>
+                        <a href="responsive-design.html" class="btn primary-btn">Start Tutorial</a>
+                    </div>
+                </div>
+                
+                <!-- Tutorial 4 -->
+                <div class="tutorial-card" data-category="javascript">
+                    <div class="tutorial-image">
+                        <img src="https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Asynchronous JavaScript">
+                    </div>
+                    <div class="tutorial-content">
+                        <div class="tutorial-meta">
+                            <span class="tutorial-level"><i class="fas fa-layer-group"></i> Advanced</span>
+                            <span class="tutorial-duration"><i class="far fa-clock"></i> 2.5 hours</span>
+                        </div>
+                        <h3 class="tutorial-title">Asynchronous JavaScript: Promises, Async/Await, and Beyond</h3>
+                        <p class="tutorial-description">Master asynchronous programming in JavaScript with promises, async/await syntax, and handling complex async flows.</p>
+                        <div class="tutorial-tags">
+                            <span class="tutorial-tag">JavaScript</span>
+                            <span class="tutorial-tag">Async</span>
+                            <span class="tutorial-tag">Advanced</span>
+                        </div>
+                        <a href="async-javascript.html" class="btn primary-btn">Start Tutorial</a>
+                    </div>
+                </div>
+                
+                <!-- Tutorial 5 -->
+                <div class="tutorial-card" data-category="react">
+                    <div class="tutorial-image">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="React Fundamentals">
+                    </div>
+                    <div class="tutorial-content">
+                        <div class="tutorial-meta">
+                            <span class="tutorial-level"><i class="fas fa-layer-group"></i> Intermediate</span>
+                            <span class="tutorial-duration"><i class="far fa-clock"></i> 3 hours</span>
+                        </div>
+                        <h3 class="tutorial-title">React Fundamentals: Building Modern UI Components</h3>
+                        <p class="tutorial-description">Learn the basics of React, including component structure, state management, props, and creating interactive user interfaces.</p>
+                        <div class="tutorial-tags">
+                            <span class="tutorial-tag">React</span>
+                            <span class="tutorial-tag">JavaScript</span>
+                            <span class="tutorial-tag">UI</span>
+                        </div>
+                        <a href="react-fundamentals.html" class="btn primary-btn">Start Tutorial</a>
+                    </div>
+                </div>
+                
+                <!-- Tutorial 6 -->
+                <div class="tutorial-card" data-category="node">
+                    <div class="tutorial-image">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1334&q=80" alt="Node.js API">
+                    </div>
+                    <div class="tutorial-content">
+                        <div class="tutorial-meta">
+                            <span class="tutorial-level"><i class="fas fa-layer-group"></i> Intermediate</span>
+                            <span class="tutorial-duration"><i class="far fa-clock"></i> 2.5 hours</span>
+                        </div>
+                        <h3 class="tutorial-title">Building RESTful APIs with Node.js and Express</h3>
+                        <p class="tutorial-description">Create robust, scalable RESTful APIs using Node.js, Express, and MongoDB to power your web and mobile applications.</p>
+                        <div class="tutorial-tags">
+                            <span class="tutorial-tag">Node.js</span>
+                            <span class="tutorial-tag">API</span>
+                            <span class="tutorial-tag">Express</span>
+                        </div>
+                        <a href="nodejs-api.html" class="btn primary-btn">Start Tutorial</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="empty-tutorials" id="emptyTutorials">
+                <i class="fas fa-book"></i>
+                <h3>No Tutorials Found</h3>
+                <p>We couldn't find any tutorials matching your search. Try different keywords or browse all tutorials.</p>
+                <button class="btn primary-btn" id="resetFilters">Reset Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="../../index.html">Home</a>
+                        <a href="../../index.html#about">About</a>
+                        <a href="../../index.html#projects">Projects</a>
+                        <a href="../../index.html#features">Features</a>
+                        <a href="../../blog/">Blog</a>
+                        <a href="../">Resources</a>
+                        <a href="../../index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-group">
+                        <h3>Resources</h3>
+                        <a href="../../blog/">Blog</a>
+                        <a href="#">Tutorials</a>
+                        <a href="../documentation/">Documentation</a>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter for the latest updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn primary-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="https://github.com/SKYIOUS" target="_blank">
+                        <img src="../../assets/github-avatar.jpg" alt="GitHub" class="social-avatar">
+                    </a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../../security.js"></script>
+    <script src="../../scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Check if user is logged in
+            if (Security.isLoggedIn()) {
+                $('#loginLink').hide();
+                $('#dashboardLink').show();
+            } else {
+                $('#loginLink').show();
+                $('#dashboardLink').hide();
+            }
+            
+            // Category filter
+            $('.category-filter').on('click', function() {
+                $('.category-filter').removeClass('active');
+                $(this).addClass('active');
+                
+                const category = $(this).data('category');
+                filterTutorials(category);
+            });
+            
+            // Search functionality
+            $('#tutorialSearch').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase().trim();
+                searchTutorials(searchTerm);
+            });
+            
+            // Reset filters
+            $('#resetFilters').on('click', function() {
+                $('.category-filter[data-category="all"]').click();
+                $('#tutorialSearch').val('');
+            });
+            
+            // Filter tutorials by category
+            function filterTutorials(category) {
+                if (category === 'all') {
+                    $('.tutorial-card').show();
+                } else {
+                    $('.tutorial-card').hide();
+                    $(`.tutorial-card[data-category="${category}"]`).show();
+                }
+                
+                checkEmptyState();
+            }
+            
+            // Search tutorials
+            function searchTutorials(searchTerm) {
+                if (!searchTerm) {
+                    // If search term is empty, show all tutorials
+                    $('.tutorial-card').show();
+                    
+                    // Reset category filter
+                    const activeCategory = $('.category-filter.active').data('category');
+                    if (activeCategory !== 'all') {
+                        filterTutorials(activeCategory);
+                    }
+                } else {
+                    // Hide all tutorials first
+                    $('.tutorial-card').hide();
+                    
+                    // Show tutorials that match the search term
+                    $('.tutorial-card').each(function() {
+                        const title = $(this).find('.tutorial-title').text().toLowerCase();
+                        const description = $(this).find('.tutorial-description').text().toLowerCase();
+                        const tags = $(this).find('.tutorial-tag').text().toLowerCase();
+                        
+                        if (title.includes(searchTerm) || description.includes(searchTerm) || tags.includes(searchTerm)) {
+                            $(this).show();
+                        }
+                    });
+                }
+                
+                checkEmptyState();
+            }
+            
+            // Check if there are no visible tutorials
+            function checkEmptyState() {
+                if ($('.tutorial-card:visible').length === 0) {
+                    $('#emptyTutorials').show();
+                } else {
+                    $('#emptyTutorials').hide();
+                }
+            }
+            
+            // Set current year in copyright
+            const currentYear = new Date().getFullYear();
+            $('#currentYear').text(currentYear);
+        });
+    </script>
+</body>
+</html> 

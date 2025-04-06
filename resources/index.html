@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYIOUS - Resources</title>
+    <link rel="stylesheet" href="../styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .resources-container {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+        
+        .resources-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .resources-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .resources-header p {
+            color: var(--gray-600);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .resource-card {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .resource-header {
+            padding: 25px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            text-align: center;
+        }
+        
+        .resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .resource-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .resource-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .resource-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .resource-description {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        
+        .resource-links {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        
+        .resource-links li {
+            margin-bottom: 10px;
+        }
+        
+        .resource-links li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray-800);
+            transition: var(--transition);
+        }
+        
+        .resource-links li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .resource-links li a i {
+            color: var(--primary-color);
+        }
+        
+        .resource-footer {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 20px;
+            text-align: center;
+        }
+        
+        .featured-resource {
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .featured-resource-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .featured-resource-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .featured-resource-content {
+            padding: 30px;
+        }
+        
+        .featured-resource-label {
+            display: inline-block;
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .featured-resource-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .featured-resource-description {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-section {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 60px 0;
+            border-radius: var(--border-radius);
+            margin-top: 70px;
+        }
+        
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .newsletter-container h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .newsletter-container p {
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .newsletter-form .btn {
+            padding: 12px 20px;
+            background-color: var(--text-light);
+            color: var(--primary-color);
+            border: none;
+            font-weight: 600;
+        }
+        
+        .newsletter-form .btn:hover {
+            background-color: var(--gray-100);
+        }
+        
+        @media (max-width: 768px) {
+            .resources-header h1 {
+                font-size: 2rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SKYIOUS</div>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../blog/">Blog</a></li>
+                    <li><a href="#" class="active">Resources</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="account-link">
+                        <a href="../account/login.html" id="loginLink">Login</a>
+                        <a href="../account/dashboard.html" id="dashboardLink" style="display: none;">My Account</a>
+                    </div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="resources-container">
+        <div class="container">
+            <div class="resources-header">
+                <h1>Learning Resources</h1>
+                <p>Explore our collection of tutorials, documentation, and guides to help you learn and master the technologies we use in our projects.</p>
+            </div>
+            
+            <div class="featured-resource">
+                <div class="featured-resource-image">
+                    <img src="https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Web Development Guide">
+                </div>
+                <div class="featured-resource-content">
+                    <span class="featured-resource-label">Featured Resource</span>
+                    <h2 class="featured-resource-title">Complete Web Development Guide 2023</h2>
+                    <p class="featured-resource-description">A comprehensive guide covering everything you need to know about modern web development, from front-end technologies to back-end systems and deployment strategies.</p>
+                    <a href="guides/web-development-guide.html" class="btn primary-btn">Get Started</a>
+                </div>
+            </div>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="resource-title">Tutorials</h3>
+                        <p class="resource-subtitle">Step-by-step learning</p>
+                    </div>
+                    <div class="resource-content">
+                        <p class="resource-description">Follow our detailed tutorials to learn new skills and technologies at your own pace, with practical examples and exercises.</p>
+                        <ul class="resource-links">
+                            <li><a href="tutorials/javascript-basics.html"><i class="fas fa-arrow-right"></i> JavaScript Basics</a></li>
+                            <li><a href="tutorials/css-grid.html"><i class="fas fa-arrow-right"></i> CSS Grid & Flexbox</a></li>
+                            <li><a href="tutorials/responsive-design.html"><i class="fas fa-arrow-right"></i> Responsive Web Design</a></li>
+                        </ul>
+                        <div class="resource-footer">
+                            <a href="tutorials/" class="btn text-btn">View All Tutorials <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="resource-title">Documentation</h3>
+                        <p class="resource-subtitle">Technical references</p>
+                    </div>
+                    <div class="resource-content">
+                        <p class="resource-description">Access comprehensive documentation for our APIs, libraries, and frameworks to help you implement features and solve problems.</p>
+                        <ul class="resource-links">
+                            <li><a href="documentation/api-reference.html"><i class="fas fa-arrow-right"></i> API Reference</a></li>
+                            <li><a href="documentation/component-library.html"><i class="fas fa-arrow-right"></i> Component Library</a></li>
+                            <li><a href="documentation/best-practices.html"><i class="fas fa-arrow-right"></i> Best Practices</a></li>
+                        </ul>
+                        <div class="resource-footer">
+                            <a href="documentation/" class="btn text-btn">View Documentation <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="resource-title">Video Courses</h3>
+                        <p class="resource-subtitle">Visual learning</p>
+                    </div>
+                    <div class="resource-content">
+                        <p class="resource-description">Learn through our curated video courses that cover various topics in web development, design, and digital marketing.</p>
+                        <ul class="resource-links">
+                            <li><a href="courses/frontend-masterclass.html"><i class="fas fa-arrow-right"></i> Frontend Masterclass</a></li>
+                            <li><a href="courses/ux-design-principles.html"><i class="fas fa-arrow-right"></i> UX Design Principles</a></li>
+                            <li><a href="courses/seo-fundamentals.html"><i class="fas fa-arrow-right"></i> SEO Fundamentals</a></li>
+                        </ul>
+                        <div class="resource-footer">
+                            <a href="courses/" class="btn text-btn">Browse Courses <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="resource-title">Code Examples</h3>
+                        <p class="resource-subtitle">Practical implementations</p>
+                    </div>
+                    <div class="resource-content">
+                        <p class="resource-description">Explore our collection of code examples and snippets to quickly implement common features and solve specific challenges.</p>
+                        <ul class="resource-links">
+                            <li><a href="code/authentication.html"><i class="fas fa-arrow-right"></i> Authentication Systems</a></li>
+                            <li><a href="code/data-visualization.html"><i class="fas fa-arrow-right"></i> Data Visualization</a></li>
+                            <li><a href="code/animation-effects.html"><i class="fas fa-arrow-right"></i> Animation Effects</a></li>
+                        </ul>
+                        <div class="resource-footer">
+                            <a href="code/" class="btn text-btn">View All Examples <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="resource-title">Tools & Resources</h3>
+                        <p class="resource-subtitle">Development essentials</p>
+                    </div>
+                    <div class="resource-content">
+                        <p class="resource-description">Discover the tools, libraries, and resources we recommend for efficient and effective web development workflows.</p>
+                        <ul class="resource-links">
+                            <li><a href="tools/design-resources.html"><i class="fas fa-arrow-right"></i> Design Resources</a></li>
+                            <li><a href="tools/development-utilities.html"><i class="fas fa-arrow-right"></i> Development Utilities</a></li>
+                            <li><a href="tools/productivity-tools.html"><i class="fas fa-arrow-right"></i> Productivity Tools</a></li>
+                        </ul>
+                        <div class="resource-footer">
+                            <a href="tools/" class="btn text-btn">Explore Tools <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="resource-title">Learning Paths</h3>
+                        <p class="resource-subtitle">Guided education</p>
+                    </div>
+                    <div class="resource-content">
+                        <p class="resource-description">Follow our structured learning paths to develop expertise in specific areas, from beginner to advanced levels.</p>
+                        <ul class="resource-links">
+                            <li><a href="paths/frontend-developer.html"><i class="fas fa-arrow-right"></i> Frontend Developer</a></li>
+                            <li><a href="paths/fullstack-engineer.html"><i class="fas fa-arrow-right"></i> Fullstack Engineer</a></li>
+                            <li><a href="paths/ui-ux-designer.html"><i class="fas fa-arrow-right"></i> UI/UX Designer</a></li>
+                        </ul>
+                        <div class="resource-footer">
+                            <a href="paths/" class="btn text-btn">View Learning Paths <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="newsletter-section">
+                <div class="newsletter-container">
+                    <h2>Stay Updated with New Resources</h2>
+                    <p>Subscribe to our newsletter to receive updates when we publish new tutorials, guides, and learning materials.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">SKYIOUS</div>
+                    <p class="footer-tagline">Building innovative digital solutions since 2019</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-group">
+                        <h3>Navigation</h3>
+                        <a href="../index.html">Home</a>
+                        <a href="../index.html#about">About</a>
+                        <a href="../index.html#projects">Projects</a>
+                        <a href="../index.html#features">Features</a>
+                        <a href="../blog/">Blog</a>
+                        <a href="../resources/">Resources</a>
+                        <a href="../index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-group">
+                        <h3>Resources</h3>
+                        <a href="../blog/">Blog</a>
+                        <a href="tutorials/">Tutorials</a>
+                        <a href="documentation/">Documentation</a>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter for the latest updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn primary-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="https://github.com/SKYIOUS" target="_blank">
+                        <img src="../assets/github-avatar.jpg" alt="GitHub" class="social-avatar">
+                    </a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> SKYIOUS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../security.js"></script>
+    <script src="../scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Check if user is logged in
+            if (Security.isLoggedIn()) {
+                $('#loginLink').hide();
+                $('#dashboardLink').show();
+            } else {
+                $('#loginLink').show();
+                $('#dashboardLink').hide();
+            }
+            
+            // Set current year in copyright
+            const currentYear = new Date().getFullYear();
+            $('#currentYear').text(currentYear);
+            
+            // Newsletter form submission
+            $('.newsletter-form').on('submit', function(e) {
+                e.preventDefault();
+                alert('Thank you for subscribing to our newsletter!');
+                $(this).find('input').val('');
+            });
+        });
+    </script>
+</body>
+</html> 
